@@ -11,6 +11,7 @@ const isDevelopment =
 module.exports = (options = {}) => {
   const js = {
     test: paths.patterns.js,
+    exclude: /node_modules/,
     include: paths.source,
     use: ['babel-loader'],
   }
