@@ -12,7 +12,7 @@ const presetEnv = {
   loose: true,
   useBuiltIns: 'usage',
   corejs: 3,
-  modules: isTest ? 'commonjs' : false,
+  modules: isTest ? 'commonjs' : 'auto',
   shippedProposals: true,
   bugfixes: true, // remove later in babel 8
 }
@@ -30,6 +30,7 @@ const pluginStyledComponents = {
 
 const pluginEffector = {
   addLoc: true,
+  importName: ['effector', 'effector-logger'],
 }
 
 module.exports = {
@@ -40,7 +41,7 @@ module.exports = {
   ],
   plugins: [
     ['babel-plugin-styled-components', pluginStyledComponents],
-    [effector / babel - plugin, (isDevelopment || isTest) && pluginEffector],
     [isDevelopment && 'react-refresh/babel'],
+    ['effector/babel-plugin', (isDevelopment || isTest) && pluginEffector],
   ],
 }
