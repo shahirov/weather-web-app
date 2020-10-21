@@ -9,7 +9,9 @@ export const GlobalStyle = createGlobalStyle`
     width: 100vw;
     min-height: 100vh;
     font-family: 'Bree Serif', serif;
-    color: #fff;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #000;
     background: linear-gradient(
       to top,
       rgb(94, 231, 223) 0px,
@@ -27,5 +29,61 @@ export const GlobalStyle = createGlobalStyle`
   a {
     color: inherit;
     text-decoration: none;
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes slide-down {
+    from {
+      transform: translateY(-25%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slide-up {
+    from {
+      transform: translateY(50%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slide-right {
+    from {
+      transform: translateX(-50%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes scale-up {
+    from {
+      transform: scale(0);
+    }
+    to {
+      transform: scale(1);
+    }
+  }
+
+  @keyframes scale-up-circle {
+    from {
+      transform-origin: top;
+      transform: scale(0) translateY(-50%) rotate(0deg);
+    }
+    to {
+      transform-origin: center;
+      transform: scale(1) translateY(-50%) rotate(360deg);
+    }
   }
 `
