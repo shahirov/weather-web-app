@@ -31,6 +31,27 @@ export const GlobalStyle = createGlobalStyle`
     text-decoration: none;
   }
 
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin: 0;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  ul,
+  ol,
+  li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
   @keyframes fade-in {
     from {
       opacity: 0;
