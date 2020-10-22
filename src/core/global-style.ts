@@ -11,6 +11,7 @@ export const GlobalStyle = createGlobalStyle`
     font-family: 'Bree Serif', serif;
     font-size: 16px;
     line-height: 1.5;
+    letter-spacing: 0.1rem;
     color: #000;
     background: linear-gradient(
       to top,

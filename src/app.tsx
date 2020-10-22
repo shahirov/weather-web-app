@@ -1,5 +1,11 @@
 import React from 'react'
 
+import { AppBar } from './ui'
+
 export const App = () => {
-  return <div />
+  return (
+    <>
+      <AppBar position="fixed" />
+    </>
+  )
 }
