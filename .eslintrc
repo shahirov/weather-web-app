@@ -151,13 +151,7 @@
     ],
     "unicorn/no-null": "off",
     "unicorn/no-fn-reference-in-iterator": "off",
-    "react/require-default-props": [
-      "warn",
-      {
-        "forbidDefaultForRequired": true,
-        "ignoreFunctionalComponents": true
-      }
-    ],
+    "react/require-default-props": "off",
     "@typescript-eslint/comma-dangle": "off"
   }
 }

@@ -2,7 +2,6 @@ const ReactRefreshPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin')
 const ErrorOverlayPlugin = require('error-overlay-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const CircularDependencyPlugin = require('circular-dependency-plugin')
 const webpack = require('webpack')
 const { merge } = require('webpack-merge')
 
@@ -31,10 +30,6 @@ module.exports = merge(common, {
     new FriendlyErrorsWebpackPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new ReactRefreshPlugin(),
-    new CircularDependencyPlugin({
-      exclude: /a\.js|node_modules/, // exclude node_modules
-      failOnError: false, // show a warning when there is a circular dependency
-    }),
   ],
   devtool: 'eval-source-map',
   devServer: {
