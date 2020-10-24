@@ -11,6 +11,8 @@ type Props = {
   ) => void
 }
 
+type PickedProps = Pick<Props, 'open'>
+
 export const Drawer = ({ onClose, open = false }: Props) => {
   const handleKeyDown = React.useCallback(
     (event: KeyboardEvent) => {
@@ -34,10 +36,10 @@ export const Drawer = ({ onClose, open = false }: Props) => {
   }, [handleKeyDown, open])
 
   return (
-    <Modal opened={open} role="presentation">
+    <Modal open={open} role="presentation">
       <Row
         as={Backdrop}
-        opened={open}
+        open={open}
         onClick={onClose}
         align="center"
         justify="center"
@@ -45,7 +47,7 @@ export const Drawer = ({ onClose, open = false }: Props) => {
       />
       <Grid
         as={Paper}
-        opened={open}
+        open={open}
         areas="
           'header'
           'nav'
@@ -85,7 +87,7 @@ export const Drawer = ({ onClose, open = false }: Props) => {
   )
 }
 
-const Modal = styled.aside<{ opened: boolean }>`
+const Modal = styled.aside<PickedProps>`
   position: fixed;
   top: 0;
   right: 0;
@@ -94,23 +96,23 @@ const Modal = styled.aside<{ opened: boolean }>`
   width: 100%;
   overflow: hidden;
   z-index: 1300;
-  pointer-events: ${({ opened }) => (opened ? 'auto' : 'none')};
+  pointer-events: ${({ open }) => (open ? 'auto' : 'none')};
 `
 
-const Backdrop = styled.div<{ opened: boolean }>`
+const Backdrop = styled.div<PickedProps>`
   position: fixed;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
   background-color: #0c1066;
-  opacity: ${({ opened }) => (opened ? '0.4' : '0')};
+  opacity: ${({ open }) => (open ? '0.4' : '0')};
   transition: opacity 0.3s linear;
   will-change: opacity;
   z-index: -1;
 `
 
-const Paper = styled.div<{ opened: boolean }>`
+const Paper = styled.div<PickedProps>`
   position: fixed;
   top: 0;
   left: 0;
@@ -119,7 +121,7 @@ const Paper = styled.div<{ opened: boolean }>`
   min-height: 100vh;
   background: #fff;
   box-shadow: 0 0 2rem rgba(0, 0, 255, 0.1);
-  transform: ${({ opened }) => (opened ? 'none' : 'translateX(-200%)')};
+  transform: ${({ open }) => (open ? 'none' : 'translateX(-200%)')};
   transition: transform 0.3s linear;
   will-change: transform;
   z-index: 1200;

@@ -36,7 +36,7 @@ module.exports = {
     new ForkTsCheckerWebpackPlugin({
       eslint: {
         enabled: true,
-        files: './src/**/*.{ts,tsx,js,jsx}',
+        files: '../src/**/*.{ts,tsx,js,jsx}',
       },
     }),
   ],

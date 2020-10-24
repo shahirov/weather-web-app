@@ -26,10 +26,10 @@ module.exports = merge(common, {
       filename: paths.outputDev.css,
       chunkFilename: paths.outputDev.css,
     }),
-    new ErrorOverlayPlugin(),
-    new FriendlyErrorsWebpackPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new ReactRefreshPlugin(),
+    new ErrorOverlayPlugin(),
+    new FriendlyErrorsWebpackPlugin(),
   ],
   devtool: 'eval-source-map',
   devServer: {

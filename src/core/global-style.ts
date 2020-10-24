@@ -12,12 +12,8 @@ export const GlobalStyle = createGlobalStyle`
     font-size: 16px;
     line-height: 1.5;
     letter-spacing: 0.1rem;
-    color: #000;
-    background: linear-gradient(
-      to top,
-      rgb(94, 231, 223) 0px,
-      rgb(102, 166, 255) 100%
-    );
+    color: ${({ theme }) => theme.colors.text};
+    background: ${({ theme }) => theme.colors.background.primary};
   }
 
   *,
