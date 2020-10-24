@@ -5,11 +5,83 @@ import styled, { css } from 'styled-components'
 import MenuIcon from '~/assets/icons/menu-icon.svg'
 import { getTodaysDate } from '~/lib/date-fns'
 import LogoIcon from '~/logo.svg'
+import { Drawer } from '~/ui/drawer'
 import { Cell, Grid } from '~/ui/grid'
 import { Row } from '~/ui/row'
 
 type Props = {
   position?: 'fixed' | 'static' | 'absolute' | 'relative' | 'sticky'
+}
+
+const Logo = () => (
+  <Link to="/">
+    <Row align="center" justify="center">
+      <LogoIcon />
+      <LogoTitle>Weatherio</LogoTitle>
+    </Row>
+  </Link>
+)
+
+const ThemeSwitch = () => {
+  return (
+    <Row align="center">
+      <SwitchItem>Light</SwitchItem>
+      <SwitchInput id="switch" type="checkbox" />
+      <Row as={SwitchLabel} htmlFor="switch" align="center">
+        <SwitchButton />
+      </Row>
+      <SwitchItem>Dark</SwitchItem>
+    </Row>
+  )
+}
+
+export const AppBar = ({ position = 'fixed' }: Props) => {
+  const [isOpen, setIsOpen] = React.useState(false)
+
+  const toggleDrawer = React.useCallback(
+    (open: boolean) => (
+      event: React.KeyboardEvent | React.MouseEvent | KeyboardEvent,
+    ) => {
+      if (
+        event.type === 'keydown' &&
+        ((event as React.KeyboardEvent).key === 'Tab' ||
+          (event as React.KeyboardEvent).key === 'Shift')
+      ) {
+        return
+      }
+
+      setIsOpen(open)
+    },
+    [setIsOpen],
+  )
+
+  return (
+    <AppHeader position={position}>
+      <Grid
+        as={Toolbar}
+        areas="'left-section date right-section'"
+        places="center stretch"
+        cols="0.6fr 1fr 0.5fr"
+        rows="minmax(4rem, auto)"
+      >
+        <Cell as={LeftSection} area="left-section">
+          <Row align="center">
+            <IconButton aria-label="open drawer" onClick={toggleDrawer(true)}>
+              <HamburgerIcon />
+            </IconButton>
+            <Logo />
+          </Row>
+        </Cell>
+        <Cell area="date" place="center">
+          <DateText>{getTodaysDate()}</DateText>
+        </Cell>
+        <Cell as={RightSection} area="right-section" place="center end">
+          <ThemeSwitch />
+        </Cell>
+      </Grid>
+      <Drawer open={isOpen} onClose={toggleDrawer(false)} />
+    </AppHeader>
+  )
 }
 
 const AppHeader = styled.header<Pick<Props, 'position'>>`
@@ -37,7 +109,7 @@ const AppHeader = styled.header<Pick<Props, 'position'>>`
     1s ease-in-out 0s 1 normal none running fade-in;
 `
 
-const Toolbar = styled(Grid)`
+const Toolbar = styled.div`
   padding: 0 1.5rem;
 
   @media screen and (max-width: 960px) {
@@ -100,7 +172,7 @@ const SwitchInput = styled.input`
   overflow: hidden;
 `
 
-const SwitchLabel = styled(Row)`
+const SwitchLabel = styled.label`
   position: relative;
   margin: 0 8px;
   width: 2.3rem;
@@ -129,7 +201,7 @@ const SwitchItem = styled.span`
   text-transform: uppercase;
 `
 
-const LeftSection = styled(Cell)`
+const LeftSection = styled.div`
   @media screen and (max-width: 960px) {
     width: 100%;
 
@@ -141,65 +213,8 @@ const LeftSection = styled(Cell)`
   }
 `
 
-const RightSection = styled(Cell)`
-  place-self: center end;
-
+const RightSection = styled.div`
   @media screen and (max-width: 960px) {
     place-self: center center;
   }
 `
-
-const Logo = () => (
-  <Link to="/">
-    <Row align="center" justify="center">
-      <LogoIcon />
-      <LogoTitle>Weatherio</LogoTitle>
-    </Row>
-  </Link>
-)
-
-const ThemeSwitch = () => {
-  return (
-    <Row align="center">
-      <SwitchItem>Light</SwitchItem>
-      <SwitchInput id="switch" type="checkbox" />
-      <SwitchLabel
-        as="label"
-        htmlFor="switch"
-        align="center"
-        justify="space-between"
-      >
-        <SwitchButton />
-      </SwitchLabel>
-      <SwitchItem>Dark</SwitchItem>
-    </Row>
-  )
-}
-
-export const AppBar = ({ position = 'fixed' }: Props) => {
-  return (
-    <AppHeader position={position}>
-      <Toolbar
-        areas="'left-section date right-section'"
-        places="center stretch"
-        cols="0.6fr 1fr 0.5fr"
-        rows="minmax(4rem, auto)"
-      >
-        <LeftSection area="left-section">
-          <Row align="center">
-            <IconButton aria-label="open drawer">
-              <HamburgerIcon />
-            </IconButton>
-            <Logo />
-          </Row>
-        </LeftSection>
-        <Cell area="date" place="center center">
-          <DateText>{getTodaysDate()}</DateText>
-        </Cell>
-        <RightSection area="right-section">
-          <ThemeSwitch />
-        </RightSection>
-      </Toolbar>
-    </AppHeader>
-  )
-}

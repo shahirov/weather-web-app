@@ -53,6 +53,11 @@ export const GlobalStyle = createGlobalStyle`
     list-style: none;
   }
 
+  img {
+    width: 100%;
+    height: auto;
+  }
+
   @keyframes fade-in {
     from {
       opacity: 0;
