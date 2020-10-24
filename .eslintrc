@@ -69,7 +69,8 @@
     {
       "files": ["src/**/*.tsx"],
       "rules": {
-        "@typescript-eslint/explicit-module-boundary-types": "off"
+        "@typescript-eslint/explicit-module-boundary-types": "off",
+        "@typescript-eslint/no-use-before-define": "off"
       }
     },
     {
