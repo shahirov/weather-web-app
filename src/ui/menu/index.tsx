@@ -43,4 +43,5 @@ const IconButton = styled.button`
 const HamburgerIcon = styled(MenuIcon)`
   width: 3rem;
   height: 1.2rem;
+  fill: ${({ theme }) => theme.colors.text};
 `

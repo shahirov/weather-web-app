@@ -91,10 +91,19 @@
       "rules": {
         "import/no-default-export": "off"
       }
+    },
+    {
+      "files": ["src/pages/paths.ts"],
+      "rules": {
+        "@typescript-eslint/explicit-module-boundary-types": "off"
+      }
     }
   ],
   "rules": {
-    "react/jsx-filename-extension": ["error", { "extensions": [".jsx", ".tsx"] }],
+    "react/jsx-filename-extension": [
+      "error",
+      { "extensions": [".jsx", ".tsx"] }
+    ],
     "import/extensions": [
       "error",
       "ignorePackages",

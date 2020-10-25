@@ -3,8 +3,9 @@ import styled, { ThemeProvider } from 'styled-components'
 
 import { GlobalStyle } from './core'
 import { getTodaysDate } from './lib/date-fns'
-import { useTheme } from './lib/hooks/use-theme'
+import { useTheme } from './lib/hooks'
 import { darkTheme, lightTheme } from './lib/themes'
+import { Pages } from './pages'
 import {
   AppBar,
   Cell,
@@ -17,17 +18,8 @@ import {
 } from './ui'
 
 export const App = () => {
-  const [opened, setOpened] = React.useState(false)
-  const [switched, setSwitched] = React.useState(false)
   const [theme, toggleTheme] = useTheme()
-
-  const switchTheme = React.useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      setSwitched(event.currentTarget.checked)
-      toggleTheme()
-    },
-    [toggleTheme],
-  )
+  const [opened, setOpened] = React.useState(false)
 
   const toggleDrawer = React.useCallback(
     (open: boolean) => (
@@ -51,26 +43,49 @@ export const App = () => {
   return (
     <ThemeProvider theme={themeMode}>
       <GlobalStyle />
-      <AppBar position="fixed">
-        <Toolbar>
-          <Cell as={LeftSection} area="left-section">
-            <Row align="center">
-              <Menu onClick={toggleDrawer(true)} />
-              <Logo />
-            </Row>
-          </Cell>
-          <Cell area="date" place="center">
-            <DateText>{getTodaysDate()}</DateText>
-          </Cell>
-          <Cell as={RightSection} area="right-section" place="center end">
-            <ThemeSwitch switched={switched} onChange={switchTheme} />
-          </Cell>
-        </Toolbar>
-        <Drawer open={opened} onClose={toggleDrawer(false)} />
-      </AppBar>
+      <Layout>
+        <AppBar>
+          <Toolbar>
+            <Cell as={LeftSection} area="left-section">
+              <Row align="center">
+                <Menu onClick={toggleDrawer(true)} />
+                <Logo />
+              </Row>
+            </Cell>
+            <Cell area="date" place="center">
+              <DateText>{getTodaysDate()}</DateText>
+            </Cell>
+            <Cell as={RightSection} area="right-section" place="center end">
+              <ThemeSwitch checked={theme === 'dark'} onChange={toggleTheme} />
+            </Cell>
+          </Toolbar>
+          <Drawer open={opened} onClose={toggleDrawer(false)} />
+        </AppBar>
+        <Main>
+          <Pages />
+        </Main>
+      </Layout>
     </ThemeProvider>
   )
 }
+
+const Layout = styled.div`
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  min-height: 100%;
+
+  & > * {
+    flex-shrink: 0;
+  }
+`
+
+const Main = styled.div`
+  display: flex;
+  flex-basis: 100%;
+  flex-direction: column;
+  flex-grow: 1;
+`
 
 const LeftSection = styled.div`
   @media screen and (max-width: 960px) {

@@ -6,7 +6,7 @@ declare module 'styled-components' {
       background: {
         primary: string
         secondary: string
-        drawer: string
+        drawerHeader: string
       }
       common: string
       text: string

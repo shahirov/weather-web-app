@@ -119,7 +119,7 @@ const Paper = styled.div<PickedProps>`
   flex: 1 0 auto;
   width: 26rem;
   min-height: 100vh;
-  background: #fff;
+  background: ${({ theme }) => theme.colors.background.secondary};
   box-shadow: 0 0 2rem rgba(0, 0, 255, 0.1);
   transform: ${({ open }) => (open ? 'none' : 'translateX(-200%)')};
   transition: transform 0.3s linear;
@@ -129,7 +129,7 @@ const Paper = styled.div<PickedProps>`
 
 const Header = styled.section`
   color: #fff;
-  background: linear-gradient(to right, #00ff9b, #5f84fb);
+  background: ${({ theme }) => theme.colors.background.drawerHeader};
   box-shadow: 0 0.5rem 2rem rgba(0, 0, 255, 0.2);
 `
 

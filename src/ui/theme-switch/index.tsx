@@ -3,23 +3,23 @@ import styled from 'styled-components'
 
 import { Row } from '~/ui/row'
 
-type Props = {
-  switched?: boolean
-  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
-}
+type Props = Partial<{
+  checked: boolean
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+}>
 
-export const ThemeSwitch = ({ onChange, switched = false }: Props) => {
+export const ThemeSwitch = ({ onChange, checked = false }: Props) => {
   return (
     <Row align="center">
       <SwitchItem>Light</SwitchItem>
       <SwitchInput
         id="switch"
         type="checkbox"
-        checked={switched}
+        checked={checked}
         onChange={onChange}
       />
       <Row as={SwitchLabel} htmlFor="switch" align="center">
-        <SwitchButton switched={switched} />
+        <SwitchButton checked={checked} />
       </Row>
       <SwitchItem>Dark</SwitchItem>
     </Row>
@@ -42,7 +42,7 @@ const SwitchLabel = styled.label`
   width: 2.3rem;
   height: 1.13rem;
   border-radius: 0.5rem;
-  background: rgb(0 0 0 / 50%);
+  background: ${({ theme }) => theme.colors.switchLabel};
   transition: background-color 300ms linear 0s;
   cursor: pointer;
 `
@@ -54,11 +54,11 @@ const SwitchButton = styled.span<Props>`
   width: 1.4rem;
   height: 1.4rem;
   border-radius: 50%;
-  background: rgb(43 36 77);
+  background: ${({ theme }) => theme.colors.switchButton};
   box-shadow: rgba(0, 0, 255, 0.5) 0 0 0;
   transition: left 0.3s linear 0s;
 
-  left: ${({ switched }) => (switched ? '1rem' : 0)};
+  left: ${({ checked }) => (checked ? '1rem' : 0)};
 `
 
 const SwitchItem = styled.span`
