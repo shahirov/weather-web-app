@@ -116,7 +116,6 @@ const Paper = styled.div<PickedProps>`
   position: fixed;
   top: 0;
   left: 0;
-  flex: 1 0 auto;
   width: 26rem;
   min-height: 100vh;
   background: ${({ theme }) => theme.colors.background.secondary};

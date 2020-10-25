@@ -3,19 +3,19 @@ import styled from 'styled-components'
 
 import { FormCard, FormNotice, Row } from '~/ui'
 
-export const LoginPage = () => {
+export const SignupPage = () => {
   return (
     <Row as={Paper} align="center" justify="center">
-      <FormCard title="Login" text="Welcome Back!">
+      <FormCard title="Signup" text="Join Weatherio Today">
         <Row as={Form} direction="column" align="center">
           <Input type="email" placeholder="Email" />
           <Input type="password" placeholder="Password" />
-          <Button type="button">Login</Button>
+          <Button type="button">Signup</Button>
         </Row>
         <FormNotice
-          text="Don't have an account?"
-          link="/signup"
-          textLink="Signup"
+          text="Already have an account?"
+          link="/login"
+          textLink="Login"
         />
       </FormCard>
     </Row>

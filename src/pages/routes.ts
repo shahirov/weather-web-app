@@ -4,7 +4,7 @@ import { Error404Page } from './error'
 import { HomePage } from './home'
 import { LoginPage } from './login'
 import { path } from './paths'
-import { SignupPage } from './register'
+import { SignupPage } from './signup'
 
 export const routes = [
   {
@@ -18,7 +18,7 @@ export const routes = [
     exact: true,
   },
   {
-    path: path.register(),
+    path: path.signup(),
     component: SignupPage,
     exact: true,
   },

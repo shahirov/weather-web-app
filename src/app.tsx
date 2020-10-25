@@ -82,6 +82,8 @@ const Layout = styled.div`
 
 const Main = styled.div`
   display: flex;
+  align-items: center;
+  justify-content: center;
   flex-basis: 100%;
   flex-direction: column;
   flex-grow: 1;
