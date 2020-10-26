@@ -27,8 +27,7 @@ const config: Partial<Config> = {
 
 firebase.initializeApp(config)
 
-export const firestore = firebase.firestore()
+export const db = firebase.firestore()
 export const auth = firebase.auth()
 
-// eslint-disable-next-line import/no-default-export
-export default firebase
+export { firebase }
