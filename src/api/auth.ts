@@ -5,12 +5,7 @@ import { createEffect } from 'effector'
 
 import { auth, db, firebase } from '~/lib/firebase'
 
-type UserDocumentData = {
-  email: string
-  displayName: string
-  photoUrl: string
-  createdAt: Date
-}
+import { UserDocumentData } from './types'
 
 const usersRef = db.collection('/users')
 
@@ -45,9 +40,7 @@ export const createUserDocumentFx = createEffect<
     await userRef.set({
       displayName: user.displayName,
       email: user.email,
-      photoUrl:
-        user.photoURL ||
-        'https://www.jamf.com/jamf-nation/img/default-avatars/generic-user-purple.png',
+      photoUrl: user.photoURL,
       createdAt,
     })
   }

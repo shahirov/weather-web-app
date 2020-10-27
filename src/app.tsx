@@ -1,10 +1,12 @@
+import { useStore } from 'effector-react'
 import React from 'react'
 import styled, { ThemeProvider } from 'styled-components'
 
 import { GlobalStyle } from './core'
+import { $isAuthenticated } from './features/auth/model'
 import { getTodaysDate } from './lib/date-fns'
 import { useTheme } from './lib/hooks'
-import { darkTheme, lightTheme } from './lib/themes'
+import { darkTheme, lightTheme } from './lib/theme'
 import { Pages } from './pages'
 import {
   AppBar,
@@ -20,6 +22,7 @@ import {
 export const App = () => {
   const [theme, toggleTheme] = useTheme()
   const [opened, setOpened] = React.useState(false)
+  const isAuthenticated = useStore($isAuthenticated)
 
   const toggleDrawer = React.useCallback(
     (open: boolean) => (
@@ -44,23 +47,28 @@ export const App = () => {
     <ThemeProvider theme={themeMode}>
       <GlobalStyle />
       <Layout>
-        <AppBar>
-          <Toolbar>
-            <Cell as={LeftSection} area="left-section">
-              <Row align="center">
-                <Menu onClick={toggleDrawer(true)} />
-                <Logo />
-              </Row>
-            </Cell>
-            <Cell area="date" place="center">
-              <DateText>{getTodaysDate()}</DateText>
-            </Cell>
-            <Cell as={RightSection} area="right-section" place="center end">
-              <ThemeSwitch checked={theme === 'dark'} onChange={toggleTheme} />
-            </Cell>
-          </Toolbar>
-          <Drawer open={opened} onClose={toggleDrawer(false)} />
-        </AppBar>
+        {isAuthenticated && (
+          <AppBar>
+            <Toolbar>
+              <Cell as={LeftSection} area="left-section">
+                <Row align="center">
+                  <Menu onClick={toggleDrawer(true)} />
+                  <Logo />
+                </Row>
+              </Cell>
+              <Cell area="date" place="center">
+                <DateText>{getTodaysDate()}</DateText>
+              </Cell>
+              <Cell as={RightSection} area="right-section" place="center end">
+                <ThemeSwitch
+                  checked={theme === 'dark'}
+                  onChange={toggleTheme}
+                />
+              </Cell>
+            </Toolbar>
+            <Drawer open={opened} onClose={toggleDrawer(false)} />
+          </AppBar>
+        )}
         <Main>
           <Pages />
         </Main>
