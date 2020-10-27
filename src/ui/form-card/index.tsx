@@ -11,19 +11,27 @@ type Props = {
 
 export const FormCard = ({ children, title, text }: Props) => {
   return (
-    <Card>
-      <Row as={Content} direction="column" justify="start" align="center">
-        <Header>{title}</Header>
-        {children}
-      </Row>
-      <Row as={Aside} direction="column" justify="end">
-        <Overlay />
-        <Text>{text}</Text>
-        <Hr />
-      </Row>
-    </Card>
+    <Paper align="center" justify="center">
+      <Card>
+        <Content direction="column" justify="start" align="center">
+          <Header>{title}</Header>
+          {children}
+        </Content>
+        <Aside as="aside" direction="column" justify="end">
+          <Overlay />
+          <Text>{text}</Text>
+          <Hr />
+        </Aside>
+      </Card>
+    </Paper>
   )
 }
+
+const Paper = styled(Row)`
+  width: 100%;
+  min-height: 95vh;
+  overflow: hidden;
+`
 
 const Card = styled.div`
   position: relative;
@@ -36,13 +44,13 @@ const Card = styled.div`
   animation: 1s ease-in-out fade-in;
 `
 
-const Content = styled.div`
-  flex: 2 2;
+const Content = styled(Row)`
+  flex: 3 2;
   min-height: 100%;
   animation: 1.5s ease-in-out fade-in;
 `
 
-const Aside = styled.aside`
+const Aside = styled(Row)`
   position: relative;
   flex: 3 3;
   min-height: 100%;
@@ -90,7 +98,7 @@ const Hr = styled.hr`
 
 const Header = styled.h2`
   display: block;
-  margin-top: 5rem;
+  margin-top: 3rem;
   margin-bottom: 1rem;
   font-size: 2.5rem;
   letter-spacing: 0.2rem;

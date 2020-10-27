@@ -20,6 +20,10 @@ export const FormNotice = ({ text, link, textLink }: Props) => {
 const Notice = styled.div`
   margin-top: 3rem;
   animation: 1s ease-in-out slide-up;
+
+  @media screen and (max-width: 960px) {
+    margin-top: 1rem;
+  }
 `
 
 const StyledLink = styled(Link)`

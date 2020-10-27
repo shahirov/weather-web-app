@@ -1,6 +1,8 @@
+import { useStore } from 'effector-react'
 import React from 'react'
 import styled from 'styled-components'
 
+import { $user } from '~/features/auth/model'
 import { Cell, Grid } from '~/ui/grid'
 import { Row } from '~/ui/row'
 
@@ -14,6 +16,13 @@ type Props = {
 type PickedProps = Pick<Props, 'open'>
 
 export const Drawer = ({ onClose, open = false }: Props) => {
+  const user = useStore($user)
+
+  const profileImageUrl = user
+    ? user.photoUrl
+    : 'https://www.jamf.com/jamf-nation/img/default-avatars/generic-user-purple.png'
+  const profileName = user ? user.displayName : ''
+
   const handleKeyDown = React.useCallback(
     (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
@@ -61,13 +70,10 @@ export const Drawer = ({ onClose, open = false }: Props) => {
           <GreetingText>Welcome back</GreetingText>
           <Row as={Block} align="center">
             <ProfileImage>
-              <img
-                src="https://www.jamf.com/jamf-nation/img/default-avatars/generic-user-purple.png"
-                alt="Profile"
-              />
+              <img src={profileImageUrl} alt="Profile" />
             </ProfileImage>
             <AccountDetails>
-              <AccountEmail>test@gmail.com</AccountEmail>
+              <AccountEmail>{profileName}</AccountEmail>
               <AccountPlan>Free Plan</AccountPlan>
             </AccountDetails>
           </Row>
