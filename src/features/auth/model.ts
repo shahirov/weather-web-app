@@ -19,6 +19,10 @@ export const $user = createStore<UserDocumentData | null>(null)
   )
   .reset(logoutFx.done)
 
-$user.watch(console.log)
+// export const $userRequestPending = combine(
+//   $user,
+//   getCurrentUserFx.pending,
+//   (user, pending) => !user && pending,
+// )
 
 export const $isAuthenticated = $user.map(Boolean)

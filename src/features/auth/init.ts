@@ -2,7 +2,7 @@ import { forward } from 'effector'
 
 import { checkAuthFx, getCurrentUserFx } from '~/api/auth'
 import { history } from '~/lib/history'
-import { path } from '~/pages/paths'
+import { paths } from '~/pages/paths'
 
 import { $user } from './model'
 
@@ -22,9 +22,9 @@ $user.watch((user) => {
   const { pathname } = history.location
 
   const shouldRedirect =
-    user !== null && (pathname === path.signup() || pathname === path.login())
+    user !== null && (pathname === paths.signup() || pathname === paths.login())
 
   if (shouldRedirect) {
-    history.push(path.home())
+    history.replace(paths.home())
   }
 })

@@ -21,7 +21,7 @@ export const Drawer = ({ onClose, open = false }: Props) => {
   const profileImageUrl = user
     ? user.photoUrl
     : 'https://www.jamf.com/jamf-nation/img/default-avatars/generic-user-purple.png'
-  const profileName = user ? user.displayName : ''
+  const profileName = user && user.email
 
   const handleKeyDown = React.useCallback(
     (event: KeyboardEvent) => {

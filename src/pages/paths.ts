@@ -1,7 +1,7 @@
-export const path = {
-  home: () => '/',
-  login: () => '/login',
-  signup: () => '/signup',
-  add: () => '/add',
-  details: (slug: string) => `/details/${slug}`,
+export const paths = {
+  home: (): string => '/',
+  login: (): string => '/login',
+  signup: (): string => '/signup',
+  add: (): string => '/add',
+  details: (slug: string): string => `/details/${slug}`,
 }

@@ -38,7 +38,6 @@ export const createUserDocumentFx = createEffect<
   if (!snapshot.exists) {
     const createdAt = new Date()
     await userRef.set({
-      displayName: user.displayName,
       email: user.email,
       photoUrl: user.photoURL,
       createdAt,

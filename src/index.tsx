@@ -1,16 +1,20 @@
-import './core/init'
+import './features/init'
 
 import React from 'react'
 import { render } from 'react-dom'
 import { Router } from 'react-router-dom'
 
-import { history } from '~/lib/history'
-
-import { App } from './app'
+import { App } from './features/app'
+import { AppGate } from './features/app/model'
+import { history } from './lib/history'
+import { Routes } from './pages/routes'
 
 render(
   <Router history={history}>
-    <App />
+    <AppGate />
+    <App>
+      <Routes />
+    </App>
   </Router>,
   document.querySelector('#root'),
 )
