@@ -7,13 +7,14 @@ export const GlobalStyle = createGlobalStyle`
   html {
     box-sizing: border-box;
     width: 100vw;
-    min-height: 100vh;
+    height: 100vh;
     font-family: 'Bree Serif', serif;
     font-size: 16px;
     line-height: 1.5;
     letter-spacing: 0.1rem;
-    color: ${({ theme }) => theme.colors.text};
-    background: ${({ theme }) => theme.colors.background.primary};
+    color: ${({ theme }) => (theme ? theme.colors.text : '#000')};
+    background: ${({ theme }) =>
+      theme ? theme.colors.background.primary : '#fff'};
   }
 
   *,
@@ -107,6 +108,18 @@ export const GlobalStyle = createGlobalStyle`
     to {
       transform-origin: center;
       transform: scale(1) translateY(-50%) rotate(360deg);
+    }
+  }
+
+  @keyframes rotate {
+    to {
+      transform: rotate(405deg);
+    }
+  }
+
+  @keyframes spin-move {
+    to {
+      opacity: 1;
     }
   }
 `

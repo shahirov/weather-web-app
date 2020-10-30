@@ -1,8 +1,10 @@
-import { useStore } from 'effector-react'
+import { useGate, useStore } from 'effector-react'
 import React from 'react'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
-import { $theme, toggleTheme } from '~/features/theme'
+import { $authenticationPending, $isAuthenticated } from '~/features/auth'
+import { $theme, ThemeProvider, toggleTheme } from '~/features/theme'
 import { getTodaysDate } from '~/lib/date-fns'
 import {
   AppBar,
@@ -11,11 +13,49 @@ import {
   Logo,
   Menu,
   Row,
+  Spin,
   ThemeSwitch,
   Toolbar,
 } from '~/ui'
 
-export const AppHeader = () => {
+import { GlobalStyle } from './global-style'
+import { AppGate } from './model'
+
+type Props = {
+  children: React.ReactNode
+}
+
+export const AppFrame = ({ children }: Props) => {
+  useGate(AppGate)
+  const isAuthenticated = useStore($isAuthenticated)
+  const pending = useStore($authenticationPending)
+
+  if (pending) {
+    return (
+      <>
+        <GlobalStyle />
+        <Layout>
+          <SpinSection>
+            <Spin tip="Launching Weatherio..." />
+          </SpinSection>
+        </Layout>
+      </>
+    )
+  }
+
+  return (
+    <ThemeProvider>
+      <GlobalStyle />
+      <Layout>
+        {isAuthenticated && <AppHeader />}
+        <Link to="/login">Login</Link>
+        {children}
+      </Layout>
+    </ThemeProvider>
+  )
+}
+
+const AppHeader = () => {
   const theme = useStore($theme)
   const [opened, setOpened] = React.useState(false)
 
@@ -56,6 +96,29 @@ export const AppHeader = () => {
     </AppBar>
   )
 }
+
+const SpinSection = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  color: #1890ff;
+  opacity: 1;
+  z-index: 1100;
+`
+
+const Layout = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  min-height: 100%;
+
+  & > * {
+    flex-shrink: 0;
+  }
+`
 
 const LeftSection = styled.div`
   @media screen and (max-width: 960px) {

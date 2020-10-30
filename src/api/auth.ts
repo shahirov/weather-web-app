@@ -3,11 +3,11 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import { createEffect } from 'effector'
 
-import { auth, db, firebase } from '~/lib/firebase'
+import { auth, database, firebase } from '~/lib/firebase'
 
 import { UserDocumentData } from './types'
 
-const usersRef = db.collection('/users')
+const usersRef = database.collection('/users')
 
 export const getCurrentUserFx = createEffect<
   firebase.User | null,
