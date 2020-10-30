@@ -1,4 +1,4 @@
-import { createStore } from 'effector'
+import { combine, createStore } from 'effector'
 
 import {
   getCurrentUserFx,
@@ -19,10 +19,10 @@ export const $user = createStore<UserDocumentData | null>(null)
   )
   .reset(logoutFx.done)
 
-// export const $userRequestPending = combine(
-//   $user,
-//   getCurrentUserFx.pending,
-//   (user, pending) => !user && pending,
-// )
-
 export const $isAuthenticated = $user.map(Boolean)
+
+export const $authenticationPending = combine(
+  $user,
+  getCurrentUserFx.pending,
+  (user, pending) => !user && pending,
+)

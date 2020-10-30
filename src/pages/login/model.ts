@@ -14,7 +14,7 @@ export const {
   handleSubmit,
   reset,
 } = createForm({
-  // validateOn: 'submit',
+  validateOn: 'submit',
   initialValues: {
     email: '',
     password: '',

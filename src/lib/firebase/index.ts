@@ -27,7 +27,7 @@ const config: Partial<Config> = {
 
 firebase.initializeApp(config)
 
-export const db = firebase.firestore()
+export const database = firebase.firestore()
 export const auth = firebase.auth()
 
 export { firebase }

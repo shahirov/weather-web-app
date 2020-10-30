@@ -2,7 +2,7 @@ import { useStore } from 'effector-react'
 import React from 'react'
 import styled from 'styled-components'
 
-import { $user } from '~/features/auth/model'
+import { $user } from '~/features/auth'
 import { Cell, Grid } from '~/ui/grid'
 import { Row } from '~/ui/row'
 
@@ -18,9 +18,10 @@ type PickedProps = Pick<Props, 'open'>
 export const Drawer = ({ onClose, open = false }: Props) => {
   const user = useStore($user)
 
-  const profileImageUrl = user
-    ? user.photoUrl
-    : 'https://www.jamf.com/jamf-nation/img/default-avatars/generic-user-purple.png'
+  const profileImageUrl =
+    user && user.photoUrl
+      ? user.photoUrl
+      : 'https://www.jamf.com/jamf-nation/img/default-avatars/generic-user-purple.png'
   const profileName = user && user.email
 
   const handleKeyDown = React.useCallback(
