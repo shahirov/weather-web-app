@@ -1,15 +1,11 @@
-import { useStore } from 'effector-react'
 import React from 'react'
-import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
-import { paths } from '~/core'
-import { $user } from '~/features/auth'
-import { Avatar } from '~/ui/avatar'
-import { Cell, Grid } from '~/ui/grid'
+import { Grid, GridProps } from '~/ui/grid'
 import { Row } from '~/ui/row'
 
-type Props = {
+type Props = GridProps & {
+  children: React.ReactNode
   open: boolean
   onClose: (
     event: React.KeyboardEvent | React.MouseEvent | KeyboardEvent,
@@ -18,15 +14,15 @@ type Props = {
 
 type PickedProps = Pick<Props, 'open'>
 
-export const Drawer = ({ onClose, open = false }: Props) => {
-  const user = useStore($user)
-
-  const profileImageUrl =
-    user && user.photoUrl
-      ? user.photoUrl
-      : 'https://www.jamf.com/jamf-nation/img/default-avatars/generic-user-purple.png'
-  const profileName = user && user.email
-
+export const Drawer = ({
+  children,
+  onClose,
+  areas,
+  rows,
+  cols,
+  gaps,
+  open = false,
+}: Props) => {
   const handleKeyDown = React.useCallback(
     (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
@@ -61,46 +57,12 @@ export const Drawer = ({ onClose, open = false }: Props) => {
       <Grid
         as={Paper}
         open={open}
-        areas="
-          'header'
-          'nav'
-          'copyright'
-        "
-        rows="2fr 4fr 1fr"
-        cols="1fr"
-        gaps="1rem"
+        areas={areas}
+        rows={rows}
+        cols={cols}
+        gaps={gaps}
       >
-        <Cell as={Header} area="header">
-          <GreetingText>Welcome back</GreetingText>
-          <Row as={Block} align="center">
-            <Avatar
-              width="4rem"
-              height="4rem"
-              alt="Your profile image"
-              src={profileImageUrl}
-            />
-            <AccountDetails>
-              <AccountEmail>{profileName}</AccountEmail>
-              <AccountPlan>Free Plan</AccountPlan>
-            </AccountDetails>
-          </Row>
-        </Cell>
-        <Cell as={Navigation} area="nav">
-          <Row as={List} direction="column" align="stretch">
-            <ListItem>
-              <Link to={paths.home}>Home</Link>
-            </ListItem>
-            <ListItem>
-              <Link to={paths.add}>Add City</Link>
-            </ListItem>
-            <ListItem>
-              <button type="button">Logout</button>
-            </ListItem>
-          </Row>
-        </Cell>
-        <Cell area="copyright" place="center">
-          <span>Copyright © 2020 Weatherio</span>
-        </Cell>
+        {children}
       </Grid>
     </Modal>
   )
@@ -143,66 +105,4 @@ const Paper = styled.div<PickedProps>`
   transition: transform 0.3s linear;
   will-change: transform;
   z-index: 1200;
-`
-
-const Header = styled.section`
-  color: #fff;
-  background: ${({ theme }) => theme.colors.background.drawerHeader};
-  box-shadow: 0 0.5rem 2rem rgba(0, 0, 255, 0.2);
-`
-
-const GreetingText = styled.span`
-  display: block;
-  padding-top: 1.44rem;
-  font-size: 1.4rem;
-  letter-spacing: 0.15rem;
-  text-align: center;
-  text-transform: uppercase;
-`
-
-const Block = styled.div`
-  margin-top: 2.6rem;
-  margin-left: 3rem;
-
-  @media screen and (max-width: 960px) {
-    flex-direction: column;
-    justify-content: center;
-    margin: 0;
-    margin-top: 1rem;
-  }
-`
-
-const AccountDetails = styled.div`
-  margin-left: 1.5rem;
-`
-
-const AccountEmail = styled.span`
-  display: block;
-  margin-bottom: 0.3rem;
-  font-size: 1.2rem;
-`
-
-const AccountPlan = styled.span`
-  display: block;
-  font-size: 1rem;
-`
-
-const Navigation = styled.nav`
-  width: 100%;
-  height: 100%;
-`
-
-const List = styled.ul`
-  margin: 1rem 0;
-  padding-left: 2.5rem;
-  height: 100%;
-`
-
-const ListItem = styled.li`
-  display: block;
-  margin: 0.5rem 0;
-  padding: 1rem 0;
-  border-bottom: 1px solid #495cfc;
-  outline: none;
-  cursor: pointer;
 `

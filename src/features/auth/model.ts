@@ -1,4 +1,4 @@
-import { combine, createStore } from 'effector'
+import { createEffect, createEvent, createStore } from 'effector'
 
 import {
   getCurrentUserFx,
@@ -7,6 +7,13 @@ import {
   signUpViaEmailFx,
 } from '~/api/auth'
 import { UserDocumentData } from '~/api/types'
+import { history } from '~/lib/history'
+
+export const redirectUserFx = createEffect((path: string) => {
+  history.replace(path)
+})
+
+export const logout = createEvent<React.MouseEvent<HTMLButtonElement>>()
 
 export const $user = createStore<UserDocumentData | null>(null)
   .on(
@@ -21,8 +28,7 @@ export const $user = createStore<UserDocumentData | null>(null)
 
 export const $isAuthenticated = $user.map(Boolean)
 
-export const $authenticationPending = combine(
-  $user,
-  getCurrentUserFx.pending,
-  (user, pending) => !user && pending,
+export const $didRequest = createStore(false).on(
+  getCurrentUserFx.done,
+  () => true,
 )

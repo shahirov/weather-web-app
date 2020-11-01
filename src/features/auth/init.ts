@@ -1,10 +1,10 @@
-import { forward } from 'effector'
+import { forward, sample } from 'effector'
 
-import { checkAuthFx, getCurrentUserFx } from '~/api/auth'
+import { checkAuthFx, getCurrentUserFx, logoutFx } from '~/api/auth'
+import { paths } from '~/core/paths'
 import { history } from '~/lib/history'
-import { paths } from '~/pages/paths'
 
-import { $user } from './model'
+import { $didRequest, $user, logout, redirectUserFx } from './model'
 
 /**
  * check firebase authentication session
@@ -15,16 +15,43 @@ forward({
   to: getCurrentUserFx,
 })
 
+forward({
+  from: logout,
+  to: logoutFx,
+})
+
 /**
- * redirects a user if sign up or log in was success
+ * redirect a user to login page
+ * if he is not authenticated
+ */
+sample({
+  source: $user,
+  clock: $didRequest,
+  fn: (user, didRequest) =>
+    user === null && didRequest ? paths.login : paths.home,
+  target: redirectUserFx,
+})
+
+/**
+ * redirect a user when he is logging out
+ */
+sample({
+  source: logoutFx.done,
+  fn: () => paths.login,
+  target: redirectUserFx,
+})
+
+/**
+ * redirect a user to home page
+ * if sign up or log in was success
  */
 $user.watch((user) => {
   const { pathname } = history.location
 
-  const shouldRedirect =
-    user !== null && (pathname === paths.signup() || pathname === paths.login())
+  const shouldRedirectToHome =
+    user !== null && (pathname === paths.signup || pathname === paths.login)
 
-  if (shouldRedirect) {
-    history.replace(paths.home())
+  if (shouldRedirectToHome) {
+    history.replace(paths.home)
   }
 })
