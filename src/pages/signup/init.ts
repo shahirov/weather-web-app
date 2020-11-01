@@ -3,7 +3,13 @@ import { forward, guard } from 'effector'
 import { signUpViaEmailFx } from '~/api/auth'
 import { serverSideResolver } from '~/lib/resolvers'
 
-import { $errors, formValidated, reset, setServerError } from './model'
+import {
+  $errors,
+  formValidated,
+  reset,
+  setServerError,
+  SignUpGate,
+} from './model'
 
 $errors.on(setServerError, serverSideResolver)
 
@@ -20,7 +26,7 @@ forward({
  * reset form when user signs up
  */
 forward({
-  from: signUpViaEmailFx.done,
+  from: [signUpViaEmailFx.done, SignUpGate.close],
   to: reset,
 })
 

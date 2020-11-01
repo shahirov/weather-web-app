@@ -1,9 +1,12 @@
 import { createEvent } from 'effector'
+import { createGate } from 'effector-react'
 
 import { signInViaEmailFx } from '~/api/auth'
 import { firebase } from '~/lib/firebase'
 import { createForm } from '~/lib/form'
 import { clientSideResolver } from '~/lib/resolvers'
+
+export const LogInGate = createGate()
 
 export const {
   $values,

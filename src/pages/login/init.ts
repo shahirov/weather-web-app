@@ -2,7 +2,7 @@ import { forward, guard } from 'effector'
 
 import { signInViaEmailFx } from '~/api/auth'
 
-import { formValidated, reset, setServerError } from './model'
+import { formValidated, LogInGate, reset, setServerError } from './model'
 
 forward({
   from: formValidated,
@@ -10,7 +10,7 @@ forward({
 })
 
 forward({
-  from: signInViaEmailFx.done,
+  from: [signInViaEmailFx.done, LogInGate.close],
   to: reset,
 })
 

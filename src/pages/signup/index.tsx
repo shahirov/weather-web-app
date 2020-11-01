@@ -1,4 +1,4 @@
-import { useStore } from 'effector-react'
+import { useGate, useStore } from 'effector-react'
 import React from 'react'
 import styled from 'styled-components'
 
@@ -11,9 +11,12 @@ import {
   $values,
   handleChange,
   handleSubmit,
+  SignUpGate,
 } from './model'
 
 export const SignupPage = () => {
+  useGate(SignUpGate)
+
   const { email, password } = useStore($values)
   const errors = useStore($errors)
   const submitting = useStore($isSubmitting)
