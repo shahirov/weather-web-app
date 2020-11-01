@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-type GridStyledProps = Partial<{
+export type GridProps = Partial<{
   inline: 'inline-grid' | 'grid'
   gaps: string
   areas: string
@@ -9,12 +9,12 @@ type GridStyledProps = Partial<{
   places: string
 }>
 
-type CellStyledProps = Partial<{
+export type CellProps = Partial<{
   place: string
   area: string
 }>
 
-const GridStyled = styled.div<GridStyledProps>`
+export const Grid = styled.div<GridProps>`
   display: ${({ inline }) => (inline ? 'inline-grid' : 'grid')};
   gap: ${({ gaps }) => gaps || 'initial'};
   grid-template-areas: ${({ areas }) => areas || 'initial'};
@@ -23,11 +23,7 @@ const GridStyled = styled.div<GridStyledProps>`
   place-items: ${({ places }) => places || 'initial'};
 `
 
-const CellStyled = styled.div<CellStyledProps>`
+export const Cell = styled.div<CellProps>`
   place-self: ${({ place }) => place || 'initial'};
   grid-area: ${({ area }) => area || 'initial'};
 `
-
-export const Grid = styled(GridStyled)``
-
-export const Cell = styled(CellStyled)``

@@ -1,23 +1,20 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import React from 'react'
 import styled from 'styled-components'
 
-import MenuIcon from '~/assets/icons/menu-icon.svg'
-
 type Props = {
+  children: React.ReactNode
+  'aria-label': string
   onClick: (
     event: React.KeyboardEvent | React.MouseEvent | KeyboardEvent,
   ) => void
 }
 
-export const Menu = ({ onClick }: Props) => {
-  return (
-    <IconButton aria-label="open drawer" onClick={onClick}>
-      <HamburgerIcon />
-    </IconButton>
-  )
-}
+export const IconButton = ({ children, ...props }: Props) => (
+  <Button {...props}>{children}</Button>
+)
 
-const IconButton = styled.button`
+const Button = styled.button`
   position: relative;
   display: flex;
   align-items: center;
@@ -38,10 +35,4 @@ const IconButton = styled.button`
     margin-right: 0;
     width: 72px;
   }
-`
-
-const HamburgerIcon = styled(MenuIcon)`
-  width: 3rem;
-  height: 1.2rem;
-  fill: ${({ theme }) => theme.colors.text};
 `

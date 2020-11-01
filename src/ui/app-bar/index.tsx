@@ -1,17 +1,22 @@
 import React from 'react'
 import styled from 'styled-components'
 
+import { Row } from '~/ui/row'
+
 type Props = {
   children: React.ReactNode
 }
 
 export const AppBar = ({ children }: Props) => {
-  return <Header>{children}</Header>
+  return (
+    <Row as={Header} direction="column">
+      {children}
+    </Row>
+  )
 }
 
 const Header = styled.header`
   display: flex;
-  flex-direction: column;
   flex-shrink: 0;
   z-index: 1100;
   width: 100%;

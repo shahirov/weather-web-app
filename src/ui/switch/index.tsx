@@ -1,30 +1,21 @@
-import React from 'react'
+/* eslint-disable react/jsx-props-no-spreading */
+import React, { ComponentPropsWithRef } from 'react'
 import styled from 'styled-components'
 
 import { Row } from '~/ui/row'
 
-type Props = Partial<{
-  checked: boolean
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
-}>
-
-export const ThemeSwitch = ({ onChange, checked = false }: Props) => {
-  return (
-    <Row align="center">
-      <SwitchItem>Light</SwitchItem>
-      <SwitchInput
-        id="switch"
-        type="checkbox"
-        checked={checked}
-        onChange={onChange}
-      />
-      <Row as={SwitchLabel} htmlFor="switch" align="center">
-        <SwitchButton checked={checked} />
-      </Row>
-      <SwitchItem>Dark</SwitchItem>
+export const Switch = ({
+  name,
+  checked,
+  ...props
+}: ComponentPropsWithRef<'input'>) => (
+  <>
+    <SwitchInput {...props} id={name} name={name} type="checkbox" />
+    <Row as={SwitchLabel} htmlFor={name} align="center">
+      <SwitchButton checked={checked} />
     </Row>
-  )
-}
+  </>
+)
 
 const SwitchInput = styled.input`
   position: absolute;
@@ -47,7 +38,7 @@ const SwitchLabel = styled.label`
   cursor: pointer;
 `
 
-const SwitchButton = styled.span<Props>`
+const SwitchButton = styled.span<{ checked?: boolean }>`
   content: '';
   position: absolute;
   top: -0.14rem;
@@ -59,9 +50,4 @@ const SwitchButton = styled.span<Props>`
   transition: left 0.3s linear 0s;
 
   left: ${({ checked }) => (checked ? '1rem' : 0)};
-`
-
-const SwitchItem = styled.span`
-  font-size: 1rem;
-  text-transform: uppercase;
 `
