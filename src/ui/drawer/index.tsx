@@ -1,8 +1,11 @@
 import { useStore } from 'effector-react'
 import React from 'react'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
+import { paths } from '~/core'
 import { $user } from '~/features/auth'
+import { Avatar } from '~/ui/avatar'
 import { Cell, Grid } from '~/ui/grid'
 import { Row } from '~/ui/row'
 
@@ -70,9 +73,12 @@ export const Drawer = ({ onClose, open = false }: Props) => {
         <Cell as={Header} area="header">
           <GreetingText>Welcome back</GreetingText>
           <Row as={Block} align="center">
-            <ProfileImage>
-              <img src={profileImageUrl} alt="Profile" />
-            </ProfileImage>
+            <Avatar
+              width="4rem"
+              height="4rem"
+              alt="Your profile image"
+              src={profileImageUrl}
+            />
             <AccountDetails>
               <AccountEmail>{profileName}</AccountEmail>
               <AccountPlan>Free Plan</AccountPlan>
@@ -81,9 +87,15 @@ export const Drawer = ({ onClose, open = false }: Props) => {
         </Cell>
         <Cell as={Navigation} area="nav">
           <Row as={List} direction="column" align="stretch">
-            <ListItem>Home</ListItem>
-            <ListItem>Add City</ListItem>
-            <ListItem>Logout</ListItem>
+            <ListItem>
+              <Link to={paths.home}>Home</Link>
+            </ListItem>
+            <ListItem>
+              <Link to={paths.add}>Add City</Link>
+            </ListItem>
+            <ListItem>
+              <button type="button">Logout</button>
+            </ListItem>
           </Row>
         </Cell>
         <Cell area="copyright" place="center">
@@ -125,7 +137,7 @@ const Paper = styled.div<PickedProps>`
   left: 0;
   width: 26rem;
   min-height: 100vh;
-  background: ${({ theme }) => theme.colors.background.secondary};
+  background: ${({ theme }) => theme.colors.background.secondary || '#fff'};
   box-shadow: 0 0 2rem rgba(0, 0, 255, 0.1);
   transform: ${({ open }) => (open ? 'none' : 'translateX(-200%)')};
   transition: transform 0.3s linear;
@@ -158,12 +170,6 @@ const Block = styled.div`
     margin: 0;
     margin-top: 1rem;
   }
-`
-
-const ProfileImage = styled.div`
-  width: 4rem;
-  height: 4rem;
-  border-radius: 50%;
 `
 
 const AccountDetails = styled.div`
