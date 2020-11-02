@@ -7,14 +7,16 @@ export const GlobalStyle = createGlobalStyle`
   html {
     box-sizing: border-box;
     width: 100vw;
-    height: 100vh;
+    min-height: 100vh;
     font-family: 'Bree Serif', serif;
     font-size: 16px;
     line-height: 1.5;
     letter-spacing: 0.1rem;
     color: ${({ theme }) => (theme ? theme.colors.text : '#000')};
+    transition: background .3s linear;
     background: ${({ theme }) =>
       theme ? theme.colors.background.primary : '#fff'};
+      overflow-x: hidden;
   }
 
   *,

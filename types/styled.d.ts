@@ -7,6 +7,7 @@ declare module 'styled-components' {
         primary: string
         secondary: string
         drawerHeader: string
+        addCard: string
       }
       common: string
       text: string

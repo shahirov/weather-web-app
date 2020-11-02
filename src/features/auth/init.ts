@@ -1,8 +1,8 @@
 import { forward, sample } from 'effector'
 
 import { checkAuthFx, getCurrentUserFx, logoutFx } from '~/api/auth'
-import { paths } from '~/core/paths'
 import { history } from '~/lib/history'
+import { paths } from '~/pages/paths'
 
 import { $didRequest, $user, logout, redirectUserFx } from './model'
 

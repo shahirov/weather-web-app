@@ -14,6 +14,7 @@ import { DetailsPage } from '~/pages/details'
 import { Error404Page } from '~/pages/error'
 import { HomePage } from '~/pages/home'
 import { LoginPage } from '~/pages/login'
+import { paths } from '~/pages/paths'
 import { SignupPage } from '~/pages/signup'
 import {
   AppBar,
@@ -26,8 +27,6 @@ import {
   Row,
   Switch,
 } from '~/ui'
-
-import { paths } from './paths'
 
 export const Root = () => {
   const isAuthenticated = useStore($isAuthenticated)

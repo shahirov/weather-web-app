@@ -45,10 +45,6 @@ const Input = styled.input`
   box-shadow: 0 0 2rem rgba(0, 0, 255, 0.3);
   border: none;
   outline: 0;
-
-  &:disabled {
-    background: #d3d3d3;
-  }
 `
 
 const ErrorMessage = styled.div`
