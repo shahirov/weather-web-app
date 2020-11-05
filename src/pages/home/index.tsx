@@ -10,7 +10,7 @@ import { $theme } from '~/features/theme'
 import { history } from '~/lib/history'
 import { paths } from '~/pages/paths'
 import { Row } from '~/ui/row'
-// import { WeatherCard } from '~/ui/weather-card'
+import { WeatherCard } from '~/ui/weather-card'
 
 export const HomePage = () => {
   const theme = useStore($theme)
@@ -21,7 +21,13 @@ export const HomePage = () => {
 
   return (
     <Row as={Container} align="center" justify="center">
-      {/* <WeatherCard /> */}
+      <WeatherCard
+        city="Moscow"
+        condition="clear"
+        temperature="13"
+        minTemperature="8"
+        maxTemperature="15"
+      />
       <AddCard onClick={handleClick}>
         <CardTitle>Add City</CardTitle>
         <Row direction="column" align="center">
@@ -43,7 +49,7 @@ export const HomePage = () => {
 }
 
 const Container = styled.div`
-  height: 90vh;
+  min-height: 90vh;
 `
 
 const AddCard = styled.div`
