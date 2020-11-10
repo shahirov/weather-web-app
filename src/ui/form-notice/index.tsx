@@ -11,7 +11,7 @@ type Props = {
 export const FormNotice = ({ text, link, textLink }: Props) => {
   return (
     <Notice>
-      <span>{text}</span>
+      <Text>{text}</Text>
       <StyledLink to={link}>{textLink}</StyledLink>
     </Notice>
   )
@@ -24,6 +24,10 @@ const Notice = styled.div`
   @media screen and (max-width: 960px) {
     margin-top: 1rem;
   }
+`
+
+const Text = styled.span`
+  color: #000;
 `
 
 const StyledLink = styled(Link)`

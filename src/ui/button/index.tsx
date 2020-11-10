@@ -1,21 +1,6 @@
-/* eslint-disable react/button-has-type */
-import React from 'react'
 import styled from 'styled-components'
 
-export const Button = ({
-  children,
-  disabled,
-  ref,
-  type = 'button',
-}: React.ComponentPropsWithRef<'button'>) => {
-  return (
-    <StyledButton ref={ref} type={type} disabled={disabled}>
-      {children}
-    </StyledButton>
-  )
-}
-
-const StyledButton = styled.button`
+export const Button = styled.button`
   margin-top: 1.5rem;
   padding: 1rem;
   width: 60%;

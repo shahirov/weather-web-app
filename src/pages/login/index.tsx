@@ -11,11 +11,11 @@ import {
   $values,
   handleChange,
   handleSubmit,
-  LogInGate,
+  LoginPageGate,
 } from './model'
 
 export const LoginPage = () => {
-  useGate(LogInGate)
+  useGate(LoginPageGate)
 
   const { email, password } = useStore($values)
   const errors = useStore($errors)

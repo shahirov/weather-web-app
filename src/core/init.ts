@@ -1,5 +1,6 @@
 import '~/features/auth/init'
 import '~/features/theme/init'
+import '~/features/search/init'
 import '~/pages/login/init'
 import '~/pages/signup/init'
 

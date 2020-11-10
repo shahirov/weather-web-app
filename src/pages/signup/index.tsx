@@ -11,11 +11,11 @@ import {
   $values,
   handleChange,
   handleSubmit,
-  SignUpGate,
+  SignUpPageGate,
 } from './model'
 
 export const SignupPage = () => {
-  useGate(SignUpGate)
+  useGate(SignUpPageGate)
 
   const { email, password } = useStore($values)
   const errors = useStore($errors)

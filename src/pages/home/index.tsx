@@ -9,8 +9,7 @@ import LightAdd from '~/assets/icons/add-light.svg'
 import { $theme } from '~/features/theme'
 import { history } from '~/lib/history'
 import { paths } from '~/pages/paths'
-import { Row } from '~/ui/row'
-import { WeatherCard } from '~/ui/weather-card'
+import { Row, WeatherCard } from '~/ui'
 
 export const HomePage = () => {
   const theme = useStore($theme)

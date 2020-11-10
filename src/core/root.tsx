@@ -291,9 +291,11 @@ const Item = styled(NavLink)`
 const LogoutButton = styled.button`
   display: flex;
   width: 100%;
+  border: 0;
   margin: 0.5rem 0;
   padding: 1rem 0;
-  border: 0;
+  font: inherit;
+  color: ${({ theme }) => theme.colors.text};
   outline: none;
   background: transparent;
   cursor: pointer;

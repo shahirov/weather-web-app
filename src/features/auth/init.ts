@@ -1,10 +1,29 @@
 import { forward, sample } from 'effector'
 
-import { checkAuthFx, getCurrentUserFx, logoutFx } from '~/api/auth'
+import {
+  checkAuthFx,
+  getCurrentUserFx,
+  logoutFx,
+  signInViaEmailFx,
+  signUpViaEmailFx,
+} from '~/api/auth'
 import { history } from '~/lib/history'
 import { paths } from '~/pages/paths'
 
 import { $didRequest, $user, logout, redirectUserFx } from './model'
+
+$user
+  .on(
+    [
+      signUpViaEmailFx.doneData,
+      signInViaEmailFx.doneData,
+      getCurrentUserFx.doneData,
+    ],
+    (_, user) => user,
+  )
+  .reset(logoutFx.done)
+
+$didRequest.on(getCurrentUserFx.done, () => true)
 
 /**
  * check firebase authentication session
@@ -28,7 +47,7 @@ sample({
   source: $user,
   clock: $didRequest,
   fn: (user, didRequest) =>
-    user === null && didRequest ? paths.login : paths.home,
+    user === null && didRequest ? paths.login : undefined,
   target: redirectUserFx,
 })
 

@@ -6,7 +6,7 @@ import { firebase } from '~/lib/firebase'
 import { createForm } from '~/lib/form'
 import { clientSideResolver } from '~/lib/resolvers'
 
-export const SignUpGate = createGate()
+export const SignUpPageGate = createGate()
 
 export const {
   $values,

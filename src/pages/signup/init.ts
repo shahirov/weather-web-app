@@ -8,7 +8,7 @@ import {
   formValidated,
   reset,
   setServerError,
-  SignUpGate,
+  SignUpPageGate,
 } from './model'
 
 $errors.on(setServerError, serverSideResolver)
@@ -26,7 +26,7 @@ forward({
  * reset form when user signs up
  */
 forward({
-  from: [signUpViaEmailFx.done, SignUpGate.close],
+  from: [signUpViaEmailFx.done, SignUpPageGate.close],
   to: reset,
 })
 
