@@ -4,7 +4,7 @@ import { createEvent, createStore } from 'effector'
 import { City } from '~/api/types'
 
 export const onSelectedItemChange = createEvent<UseComboboxStateChange<City>>()
-export const setSearchValue = createEvent<string>()
+export const handleInputValue = createEvent<string>()
 
-export const $citiesBySearch = createStore<City[]>([])
-export const $searchedCity = createStore<City | null | undefined>(null)
+export const $suggestedCities = createStore<City[]>([])
+export const $selectedCity = createStore<City | null>(null)

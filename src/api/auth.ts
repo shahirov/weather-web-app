@@ -1,58 +1,16 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { createEffect } from 'effector'
 
-import { auth, database, firebase } from '~/lib/firebase'
+import { auth, firebase } from '~/lib/firebase'
 
-import { UserDocumentData } from './types'
-
-const usersRef = database.collection('/users')
-
-export const getCurrentUserFx = createEffect<
-  firebase.User | null,
-  UserDocumentData | null,
-  firebase.firestore.FirestoreError
->(async (user) => {
-  if (!user) return null
-
-  const userRef = usersRef.doc(user.uid)
-  const snapshot = await userRef.get()
-  const userData = snapshot.data()
-
-  if (!userData) return null
-
-  return userData as UserDocumentData
-})
-
-export const createUserDocumentFx = createEffect<
-  firebase.User | null,
-  UserDocumentData | null,
-  firebase.firestore.FirestoreError
->(async (user) => {
-  if (!user) return null
-
-  const userRef = usersRef.doc(user.uid)
-  const snapshot = await userRef.get()
-
-  if (!snapshot.exists) {
-    const createdAt = new Date()
-    await userRef.set({
-      email: user.email,
-      photoUrl: user.photoURL,
-      createdAt,
-    })
-  }
-
-  return getCurrentUserFx(user)
-})
+import { User } from './types'
+import { createUserDocumentFx, getCurrentUserFx } from './users'
 
 export const signUpViaEmailFx = createEffect<
   {
     email: string
     password: string
   },
-  UserDocumentData | null,
+  User | null,
   firebase.auth.AuthError
 >(async ({ email, password }) => {
   const { user } = await auth.createUserWithEmailAndPassword(email, password)
@@ -64,7 +22,7 @@ export const signInViaEmailFx = createEffect<
     email: string
     password: string
   },
-  UserDocumentData | null,
+  User | null,
   firebase.auth.AuthError
 >(async ({ email, password }) => {
   const { user } = await auth.signInWithEmailAndPassword(email, password)

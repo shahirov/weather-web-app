@@ -2,11 +2,11 @@ import { forward, sample } from 'effector'
 
 import {
   checkAuthFx,
-  getCurrentUserFx,
   logoutFx,
   signInViaEmailFx,
   signUpViaEmailFx,
 } from '~/api/auth'
+import { getCurrentUserFx } from '~/api/users'
 import { history } from '~/lib/history'
 import { paths } from '~/pages/paths'
 

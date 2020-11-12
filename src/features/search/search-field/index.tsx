@@ -6,13 +6,13 @@ import styled from 'styled-components'
 
 import Search from '~/assets/icons/search.svg'
 import {
-  $citiesBySearch,
+  $suggestedCities,
+  handleInputValue,
   onSelectedItemChange,
-  setSearchValue,
 } from '~/features/search/model'
 
 export const SearchField = () => {
-  const cities = useStore($citiesBySearch)
+  const cities = useStore($suggestedCities)
 
   const {
     isOpen,
@@ -32,7 +32,7 @@ export const SearchField = () => {
       if (!inputValue) {
         closeMenu()
       }
-      setSearchValue(inputValue ?? '')
+      handleInputValue(inputValue ?? '')
     },
   })
 

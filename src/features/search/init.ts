@@ -1,23 +1,27 @@
 import { guard, sample } from 'effector'
 
-import { getCitiesBySearchFx } from '~/api/cities'
+import { getSuggestedCitiesByNameFx } from '~/api/cities'
+import { getWeatherDataByCityNameFx } from '~/api/weather'
 
 import { debounce } from './lib/debounce'
 import {
-  $citiesBySearch,
-  $searchedCity,
+  $selectedCity,
+  $suggestedCities,
+  handleInputValue,
   onSelectedItemChange,
-  setSearchValue,
 } from './model'
 
-$citiesBySearch.on(
-  getCitiesBySearchFx.doneData,
+$suggestedCities.on(
+  getSuggestedCitiesByNameFx.doneData,
   (_, { data: { data: cities } }) => cities,
 )
-$searchedCity.on(onSelectedItemChange, (_, { selectedItem }) => selectedItem)
+$selectedCity.on(
+  onSelectedItemChange,
+  (_, { selectedItem: selectedCity }) => selectedCity,
+)
 
 const debouncedValue = debounce({
-  source: setSearchValue,
+  source: handleInputValue,
   timeout: 300,
 })
 
@@ -25,11 +29,19 @@ sample({
   source: guard(debouncedValue, {
     filter: (value) => value.length > 0,
   }),
-  fn: (value) => ({
-    cityNamePrefix: value,
+  fn: (prefix) => ({
+    cityNamePrefix: prefix,
     sort: 'name' as const,
     limit: 5,
     offset: 0,
   }),
-  target: getCitiesBySearchFx,
+  target: getSuggestedCitiesByNameFx,
+})
+
+sample({
+  source: guard($selectedCity, {
+    filter: Boolean,
+  }),
+  fn: (city) => ({ cityName: city.name }),
+  target: getWeatherDataByCityNameFx,
 })
