@@ -2,7 +2,7 @@ export type Params = URLSearchParams | string | { [key: string]: string }
 
 export type UnitMeasurement = 'metric' | 'imperial'
 
-export type User = {
+export type UserProfile = {
   id: string
   email: string
   photoUrl: string
@@ -11,7 +11,7 @@ export type User = {
 
 export type SortingType = 'countryCode' | 'elevation' | 'name' | 'population'
 
-export type City = {
+export type SuggestedCity = {
   city: string
   country: string
   countryCode: string
@@ -23,6 +23,12 @@ export type City = {
   regionCode: string
   type: string
   wikiDataId: string
+}
+
+export type CityModel = {
+  id: number
+  name: string
+  createdAt: Date
 }
 
 export type WeatherData = {

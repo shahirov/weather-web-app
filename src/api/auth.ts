@@ -2,19 +2,19 @@ import { createEffect } from 'effector'
 
 import { auth, firebase } from '~/lib/firebase'
 
-import { User } from './types'
-import { createUserDocumentFx, getCurrentUserFx } from './users'
+import { UserProfile } from './types'
+import { createUserProfileFx, getUserProfileFx } from './users'
 
 export const signUpViaEmailFx = createEffect<
   {
     email: string
     password: string
   },
-  User | null,
+  UserProfile | null,
   firebase.auth.AuthError
 >(async ({ email, password }) => {
   const { user } = await auth.createUserWithEmailAndPassword(email, password)
-  return createUserDocumentFx(user)
+  return createUserProfileFx(user)
 })
 
 export const signInViaEmailFx = createEffect<
@@ -22,11 +22,11 @@ export const signInViaEmailFx = createEffect<
     email: string
     password: string
   },
-  User | null,
+  UserProfile | null,
   firebase.auth.AuthError
 >(async ({ email, password }) => {
   const { user } = await auth.signInWithEmailAndPassword(email, password)
-  return getCurrentUserFx(user)
+  return getUserProfileFx(user)
 })
 
 export const logoutFx = createEffect<void, void, firebase.auth.AuthError>(() =>

@@ -2,45 +2,46 @@ import { createEffect } from 'effector'
 
 import { database, firebase } from '~/lib/firebase'
 
-import { User } from './types'
+import { UserProfile } from './types'
 
 const usersRef = database.collection('/users')
 
-export const getCurrentUserFx = createEffect<
+export const getUserProfileFx = createEffect<
   firebase.User | null,
-  User | null,
+  UserProfile | null,
   firebase.firestore.FirestoreError
 >(async (user) => {
   if (!user) return null
 
-  const userRef = usersRef.doc(user.uid)
-  const snapshot = await userRef.get()
-  const userData = snapshot.data()
+  const userProfileRef = usersRef.doc(user.uid)
+  const userProfileSnapshot = await userProfileRef.get()
+  const data = userProfileSnapshot.data()
 
-  if (!userData) return null
+  if (!userProfileSnapshot.exists || !data) {
+    return null
+  }
 
-  return userData as User
+  return data as UserProfile
 })
 
-export const createUserDocumentFx = createEffect<
+export const createUserProfileFx = createEffect<
   firebase.User | null,
-  User | null,
+  UserProfile | null,
   firebase.firestore.FirestoreError
 >(async (user) => {
   if (!user) return null
 
-  const userRef = usersRef.doc(user.uid)
-  const snapshot = await userRef.get()
+  const userProfileRef = usersRef.doc(user.uid)
+  const userProfileSnapshot = await userProfileRef.get()
 
-  if (!snapshot.exists) {
-    const createdAt = new Date()
-    await userRef.set({
+  if (!userProfileSnapshot.exists) {
+    await userProfileRef.set({
       id: user.uid,
       email: user.email,
       photoUrl: user.photoURL,
-      createdAt,
+      createdAt: new Date(),
     })
   }
 
-  return getCurrentUserFx(user)
+  return getUserProfileFx(user)
 })
