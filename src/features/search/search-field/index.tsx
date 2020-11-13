@@ -77,6 +77,7 @@ export const SearchField = () => {
 }
 
 const CitySearchInputWrapper = styled.div`
+  position: relative;
   width: 80%;
 `
 
@@ -111,7 +112,7 @@ const Input = styled.input`
 `
 
 const Menu = styled.ul`
-  position: relative;
+  position: absolute;
   width: 100%;
   padding: 0;
   border-radius: 1rem;
@@ -120,6 +121,7 @@ const Menu = styled.ul`
   list-style: none;
   box-shadow: 0 0 2rem rgba(0, 0, 255, 0.3);
   animation: slide-down 0.1s;
+  z-index: 1;
 `
 
 const MenuItem = styled.li`
