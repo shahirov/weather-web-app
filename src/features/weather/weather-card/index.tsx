@@ -1,5 +1,6 @@
 import { useGate, useStore } from 'effector-react'
 import React from 'react'
+import { useHistory } from 'react-router-dom'
 import styled, { css } from 'styled-components'
 
 import MaxArrow from '~/assets/icons/max-arrow.svg'
@@ -17,6 +18,7 @@ type Props = {
 export const WeatherCard = ({ cityName, showActionButton = false }: Props) => {
   useGate(InitGate, cityName)
 
+  const history = useHistory()
   const citiesWeatherData = useStore($citiesWeatherData)
   const cityWeatherData = citiesWeatherData[cityName]
 
@@ -27,10 +29,14 @@ export const WeatherCard = ({ cityName, showActionButton = false }: Props) => {
     return null
   }
 
+  const handleClick = () => {
+    history.push(`/details/${cityName.toLowerCase()}`)
+  }
+
   const { name, main, weather } = cityWeatherData
 
   return (
-    <Row as={Card} direction="column" align="center">
+    <Row as={Card} onClick={handleClick} direction="column" align="center">
       <CityName>{name}</CityName>
       <WeatherIconContainer>
         <Sun />
