@@ -1,15 +1,9 @@
-import { createEffect, createEvent, createStore } from 'effector'
+import { createEvent, createStore } from 'effector'
 
-import { User } from '~/api/types'
-import { history } from '~/lib/history'
-
-export const redirectUserFx = createEffect((path?: string) => {
-  if (path) history.replace(path)
-})
+import { UserProfile } from '~/api/types'
 
 export const logout = createEvent<React.MouseEvent<HTMLButtonElement>>()
 
-export const $user = createStore<User | null>(null)
-export const $didRequest = createStore(false)
+export const $user = createStore<UserProfile | null>(null)
 
 export const $isAuthenticated = $user.map(Boolean)

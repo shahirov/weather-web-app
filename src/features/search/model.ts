@@ -1,10 +1,13 @@
 import { UseComboboxStateChange } from 'downshift'
 import { createEvent, createStore } from 'effector'
 
-import { City } from '~/api/types'
+import { SuggestedCity } from '~/api/types'
 
-export const onSelectedItemChange = createEvent<UseComboboxStateChange<City>>()
+export const onSelectedItemChange = createEvent<
+  UseComboboxStateChange<SuggestedCity>
+>()
 export const handleInputValue = createEvent<string>()
 
-export const $suggestedCities = createStore<City[]>([])
-export const $selectedCity = createStore<City | null>(null)
+export const $suggestedCities = createStore<SuggestedCity[]>([])
+export const $selectedCity = createStore<SuggestedCity | null>(null)
+export const $inputValue = createStore<string>('')

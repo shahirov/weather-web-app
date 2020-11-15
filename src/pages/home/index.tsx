@@ -1,4 +1,4 @@
-import { useStore } from 'effector-react'
+import { useGate, useList, useStore } from 'effector-react'
 import React from 'react'
 import styled, { css } from 'styled-components'
 
@@ -6,27 +6,29 @@ import DarkCity from '~/assets/city-illustration-dark.svg'
 import LightCity from '~/assets/city-illustration-light.svg'
 import DarkAdd from '~/assets/icons/add-dark.svg'
 import LightAdd from '~/assets/icons/add-light.svg'
+import { $cities } from '~/features/cities'
 import { $theme } from '~/features/theme'
+import { WeatherCard } from '~/features/weather'
 import { history } from '~/lib/history'
 import { paths } from '~/pages/paths'
-import { Row, WeatherCard } from '~/ui'
+import { Row } from '~/ui'
+
+import { HomePageGate } from './model'
+
+const handleClick = () => {
+  history.push(paths.add)
+}
 
 export const HomePage = () => {
-  const theme = useStore($theme)
+  useGate(HomePageGate)
 
-  const handleClick = React.useCallback(() => {
-    history.push(paths.add)
-  }, [])
+  const theme = useStore($theme)
 
   return (
     <Row as={Container} align="center" justify="center">
-      <WeatherCard
-        city="Moscow"
-        condition="clear"
-        temperature="13"
-        minTemperature="8"
-        maxTemperature="15"
-      />
+      {useList($cities, (city) => (
+        <WeatherCard cityName={city.name} />
+      ))}
       <AddCard onClick={handleClick}>
         <CardTitle>Add City</CardTitle>
         <Row direction="column" align="center">

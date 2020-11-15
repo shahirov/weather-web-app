@@ -29,6 +29,22 @@ export const getWeatherDataByCityNameFx = createEffect<
   }),
 )
 
+export const getFavoriteCityWeatherDataFx = createEffect<
+  {
+    cityName: string
+    units?: UnitMeasurement
+  },
+  AxiosResponse<WeatherData>,
+  AxiosError
+>(({ cityName, units = 'metric' }) =>
+  request.get('weather', {
+    params: {
+      q: cityName,
+      units,
+    },
+  }),
+)
+
 export const getForecastDataByCityNameFx = createEffect<
   {
     cityName: string

@@ -6,6 +6,7 @@ import styled from 'styled-components'
 
 import Search from '~/assets/icons/search.svg'
 import {
+  $inputValue,
   $suggestedCities,
   handleInputValue,
   onSelectedItemChange,
@@ -13,6 +14,7 @@ import {
 
 export const SearchField = () => {
   const cities = useStore($suggestedCities)
+  const inputValue = useStore($inputValue)
 
   const {
     isOpen,
@@ -25,9 +27,11 @@ export const SearchField = () => {
     highlightedIndex,
     closeMenu,
   } = useCombobox({
+    inputValue,
     items: cities,
     onSelectedItemChange,
     itemToString: (item) => (item ? item.name : ''),
+    // eslint-disable-next-line @typescript-eslint/no-shadow
     onInputValueChange: ({ inputValue }) => {
       if (!inputValue) {
         closeMenu()

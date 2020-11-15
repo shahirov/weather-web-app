@@ -35,17 +35,17 @@ export const getSuggestedCitiesByNameFx = createEffect<
 
 export const getCitiesFx = createEffect<
   { user: UserProfile | null },
-  { [key: string]: CityModel } | [],
+  Record<string, CityModel>,
   firebase.firestore.FirestoreError
 >(async ({ user }) => {
-  if (!user) return []
+  if (!user) return {}
 
   const documentRef = citiesRef.doc(user.id)
   const snapshot = await documentRef.get()
   const data = snapshot.data()
 
   if (!snapshot.exists || !data) {
-    return []
+    return {}
   }
 
   return data
@@ -68,6 +68,6 @@ export const addCityFx = createEffect<
         createdAt: new Date(),
       },
     },
-    { mergeFields: ['id', 'name', 'createdAt'] },
+    { mergeFields: [city.name] },
   )
 })
