@@ -1,15 +1,30 @@
+import { useGate, useStore } from 'effector-react'
 import React from 'react'
-import { RouteComponentProps } from 'react-router-dom'
+import { RouteComponentProps, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 
 import BackIcon from '~/assets/icons/back-button.svg'
 import Sun from '~/assets/icons/sun.svg'
 import { Cell, Grid, Row } from '~/ui'
 
+import { $cityWeatherData, $daysForecastData, DetailsPageGate } from './model'
+
 export const DetailsPage = ({ history }: RouteComponentProps) => {
+  const { city } = useParams<{ city: string }>()
+
+  useGate(DetailsPageGate, city)
+
+  const weatherData = useStore($cityWeatherData)
+  const forecastData = useStore($daysForecastData)
+
   const handleClick = () => {
     history.goBack()
   }
+
+  const temperature = weatherData?.temperature
+  const condition = weatherData?.condition
+  const wind = weatherData?.wind
+  const humidity = weatherData?.humidity
 
   return (
     <Row as={Wrapper} direction="column" align="center" justify="center">
@@ -20,62 +35,52 @@ export const DetailsPage = ({ history }: RouteComponentProps) => {
       <Card>
         <CardHeader>
           <Grid as={CardHeaderContent} rows="1fr" cols="1fr 1fr">
-            <Cell as={CityWeatherInfo} place="center">
+            <Cell place="center">
               <Row
-                as={TemperatureStateContainer}
+                as={TemperatureConditionContainer}
                 direction="column"
                 align="center"
                 justify="center"
               >
-                <TemperatureText>2°</TemperatureText>
-                <WeatherState>Rain</WeatherState>
+                <TemperatureText>{temperature}°</TemperatureText>
+                <WeatherCondition>{condition}</WeatherCondition>
               </Row>
               <Row as={HumWindContainer} align="center">
-                <Row
-                  as={HumContainer}
-                  direction="column"
-                  justify="center"
-                  align="center"
-                >
+                <Row direction="column" justify="center" align="center">
                   <HumText>Humidity</HumText>
-                  <HumValue>86%</HumValue>
+                  <HumValue>{humidity}%</HumValue>
                 </Row>
                 <HumWindSeparator>&nbsp;</HumWindSeparator>
-                <Row
-                  as={WindContainer}
-                  direction="column"
-                  justify="center"
-                  align="center"
-                >
+                <Row direction="column" justify="center" align="center">
                   <WindText>Wind</WindText>
-                  <WindValue>4 K/M</WindValue>
+                  <WindValue>{wind} K/M</WindValue>
                 </Row>
               </Row>
             </Cell>
             <Cell as={CityNameContainer} place="center">
               <CityNameUnderline>
-                <CityNameText>Moscow</CityNameText>
+                <CityNameText>{city}</CityNameText>
               </CityNameUnderline>
             </Cell>
           </Grid>
         </CardHeader>
         <CardBody>
-          <Row as={ForecastContainer} align="center" justify="center">
-            {new Array(5).fill(true).map((_, index) => (
-              <Row
-                // eslint-disable-next-line react/no-array-index-key
-                key={index}
-                as={DayWeatherContainer}
-                direction="column"
-                align="center"
-                justify="center"
-              >
-                <DayWeatherText>Mon</DayWeatherText>
-                <SunIcon />
-                <DayTemperatureText>-2°</DayTemperatureText>
-                <DayStateText>Clouds</DayStateText>
-              </Row>
-            ))}
+          <Row as={ForecastContainer} align="center" justify="space-around">
+            {forecastData &&
+              Object.entries(forecastData).map(([day, data]) => (
+                <Row
+                  key={day}
+                  as={DayWeatherContainer}
+                  direction="column"
+                  align="center"
+                  justify="center"
+                >
+                  <DayWeatherText>{day}</DayWeatherText>
+                  <SunIcon />
+                  <DayTemperatureText>{data.temperature}°</DayTemperatureText>
+                  <DayStateText>{data.condition}</DayStateText>
+                </Row>
+              ))}
           </Row>
         </CardBody>
       </Card>
@@ -141,6 +146,10 @@ const Card = styled.section`
   border-radius: 1rem;
   animation: 1s ease-out 0.3s scale-up, 1.25s ease-out 0.3s forwards fade-in;
   z-index: 3;
+
+  @media screen and (max-width: 960px) {
+    width: 85%;
+  }
 `
 
 const CardHeader = styled.div`
@@ -150,16 +159,24 @@ const CardHeader = styled.div`
   overflow: hidden;
   border-radius: 1rem 1rem 0 0;
   background: linear-gradient(to bottom, #6666ab, #b28fb2, #fcb7b8);
+
+  @media screen and (max-width: 960px) {
+    height: auto;
+  }
 `
 
 const CardHeaderContent = styled.div`
   margin-top: 3rem;
   color: #fff;
+
+  @media screen and (max-width: 960px) {
+    margin-top: 2rem;
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 1fr;
+  }
 `
 
-const CityWeatherInfo = styled.div``
-
-const TemperatureStateContainer = styled.div`
+const TemperatureConditionContainer = styled.div`
   width: 100%;
 `
 
@@ -174,15 +191,13 @@ const TemperatureText = styled.span`
   text-align: center;
 `
 
-const WeatherState = styled.span`
+const WeatherCondition = styled.span`
   width: 100%;
   font-size: 1.3rem;
   letter-spacing: 0.5rem;
   text-transform: uppercase;
   text-align: center;
 `
-
-const HumContainer = styled.div``
 
 const HumText = styled.span`
   margin-bottom: 0.5rem;
@@ -200,8 +215,6 @@ const HumWindSeparator = styled.div`
   background: #fff;
 `
 
-const WindContainer = styled.div``
-
 const WindText = styled.span`
   margin-bottom: 0.5rem;
   font-size: 1rem;
@@ -213,6 +226,10 @@ const WindValue = styled.span``
 
 const CityNameContainer = styled.div`
   padding-bottom: 35%;
+
+  @media screen and (max-width: 960px) {
+    padding-bottom: 22%;
+  }
 `
 
 const CityNameUnderline = styled.div`

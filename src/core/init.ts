@@ -5,6 +5,7 @@ import '~/features/weather/init'
 import '~/features/cities/init'
 import '~/pages/home/init'
 import '~/pages/add/init'
+import '~/pages/details/init'
 import '~/pages/login/init'
 import '~/pages/signup/init'
 
