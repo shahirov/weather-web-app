@@ -94,7 +94,7 @@ const Wrapper = styled.div`
   width: 100vw;
   min-height: 100vh;
   overflow: hidden;
-  background: linear-gradient(to top, #86dbff 0, #e0c3fc 100%);
+  background: ${({ theme }) => theme.colors.background.detailsWrapper};
 `
 
 const CircleBackground = styled.div`
@@ -103,13 +103,7 @@ const CircleBackground = styled.div`
   right: 0;
   width: 100rem;
   height: 100rem;
-  background: linear-gradient(
-    -225deg,
-    #fff 0,
-    #ffe29f 10%,
-    #ffa99f 48%,
-    #ffd1ff 100%
-  );
+  background: ${({ theme }) => theme.colors.background.circle};
   border-radius: 50%;
   animation: 0.9s ease-in-out forwards scale-up-circle;
   transition: background 1s ease-in-out;

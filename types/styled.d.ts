@@ -8,6 +8,8 @@ declare module 'styled-components' {
         secondary: string
         drawerHeader: string
         addCard: string
+        detailsWrapper: string
+        circle: string
       }
       common: string
       text: string
