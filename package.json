@@ -125,6 +125,7 @@
     "history": "^4.10.1",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
+    "react-router-config": "^5.1.1",
     "react-router-dom": "^5.2.0",
     "styled-components": "^5.2.0",
     "styled-normalize": "^8.0.7"
