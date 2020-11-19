@@ -1,4 +1,4 @@
-import { useGate, useList, useStore } from 'effector-react'
+import { useGate, useStore } from 'effector-react'
 import React from 'react'
 import styled, { css } from 'styled-components'
 
@@ -6,14 +6,13 @@ import DarkCity from '~/assets/city-illustration-dark.svg'
 import LightCity from '~/assets/city-illustration-light.svg'
 import DarkAdd from '~/assets/icons/add-dark.svg'
 import LightAdd from '~/assets/icons/add-light.svg'
-import { $cities } from '~/features/cities'
 import { $theme } from '~/features/theme'
 import { WeatherCard } from '~/features/weather'
 import { history } from '~/lib/history'
 import { paths } from '~/pages/paths'
 import { Row } from '~/ui'
 
-import { HomePageGate } from './model'
+import { $citiesWeatherData, HomePageGate } from './model'
 
 const handleClick = () => {
   history.push(paths.add)
@@ -22,12 +21,20 @@ const handleClick = () => {
 export const HomePage = () => {
   useGate(HomePageGate)
 
+  const citiesWeatherData = useStore($citiesWeatherData)
   const theme = useStore($theme)
 
   return (
     <Row as={Container} align="center" justify="center">
-      {useList($cities, (city) => (
-        <WeatherCard cityName={city.name} />
+      {Object.entries(citiesWeatherData).map(([cityName, data]) => (
+        <WeatherCard
+          key={data.id}
+          cityName={cityName}
+          temperature={Math.ceil(data.main.temp)}
+          minTemperature={Math.ceil(data.main.temp_min)}
+          maxTemperature={Math.ceil(data.main.temp_max)}
+          condition={data.weather[0].main}
+        />
       ))}
       <AddCard onClick={handleClick}>
         <CardTitle>Add City</CardTitle>

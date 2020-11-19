@@ -32,7 +32,7 @@ $daysForecastData
     }
 
     Object.keys(daysForecast).forEach((day) => {
-      daysForecast[day].temperature = Math.round(
+      daysForecast[day].temperature = Math.ceil(
         daysForecast[day].temperature / daysForecast[day].counter,
       )
     })

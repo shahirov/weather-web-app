@@ -6,7 +6,7 @@ import { SuggestedCity } from '~/api/types'
 export const onSelectedItemChange = createEvent<
   UseComboboxStateChange<SuggestedCity>
 >()
-export const handleInputValue = createEvent<string>()
+export const handleInputValueChange = createEvent<string>()
 
 export const $suggestedCities = createStore<SuggestedCity[]>([])
 export const $selectedCity = createStore<SuggestedCity | null>(null)

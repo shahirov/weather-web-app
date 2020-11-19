@@ -128,3 +128,10 @@ export type ForecastData = {
     sunset: number
   }
 }
+
+export type CityWeatherData = {
+  condition: string
+  temperature: number
+  wind: number
+  humidity: number
+}

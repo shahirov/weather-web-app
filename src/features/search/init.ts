@@ -7,12 +7,12 @@ import {
   $inputValue,
   $selectedCity,
   $suggestedCities,
-  handleInputValue,
+  handleInputValueChange,
   onSelectedItemChange,
 } from './model'
 
-const debouncedValue = debounce({
-  source: handleInputValue,
+const debouncedInputValue = debounce({
+  source: handleInputValueChange,
   timeout: 300,
 })
 
@@ -23,20 +23,20 @@ $suggestedCities
   )
   .reset(addCityFx.done)
 
-$selectedCity
-  .on(onSelectedItemChange, (_, { selectedItem: selectedCity }) => selectedCity)
+$inputValue
+  .on(handleInputValueChange, (_, inputValue) => inputValue)
   .reset(addCityFx.done)
 
-$inputValue
-  .on(handleInputValue, (_, inputValue) => inputValue)
+$selectedCity
+  .on(onSelectedItemChange, (_, { selectedItem }) => selectedItem)
   .reset(addCityFx.done)
 
 sample({
-  source: guard(debouncedValue, {
-    filter: (value) => value.length > 0,
+  source: guard(debouncedInputValue, {
+    filter: Boolean,
   }),
-  fn: (prefix) => ({
-    cityNamePrefix: prefix,
+  fn: (inputValue) => ({
+    cityNamePrefix: inputValue,
     sort: 'name' as const,
     limit: 5,
     offset: 0,

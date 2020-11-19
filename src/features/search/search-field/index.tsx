@@ -7,14 +7,16 @@ import styled from 'styled-components'
 import Search from '~/assets/icons/search.svg'
 import {
   $inputValue,
+  $selectedCity,
   $suggestedCities,
-  handleInputValue,
+  handleInputValueChange,
   onSelectedItemChange,
 } from '~/features/search/model'
 
 export const SearchField = () => {
   const cities = useStore($suggestedCities)
   const inputValue = useStore($inputValue)
+  const selectedCity = useStore($selectedCity)
 
   const {
     isOpen,
@@ -28,15 +30,22 @@ export const SearchField = () => {
     closeMenu,
   } = useCombobox({
     inputValue,
-    items: cities,
     onSelectedItemChange,
+    items: cities,
+    selectedItem: selectedCity,
     itemToString: (item) => (item ? item.name : ''),
     // eslint-disable-next-line @typescript-eslint/no-shadow
-    onInputValueChange: ({ inputValue }) => {
-      if (!inputValue) {
-        closeMenu()
+    onInputValueChange: ({ inputValue, type }) => {
+      if (!inputValue) closeMenu()
+
+      if (
+        type === useCombobox.stateChangeTypes.InputKeyDownEnter ||
+        type === useCombobox.stateChangeTypes.ItemClick
+      ) {
+        return
       }
-      handleInputValue(inputValue ?? '')
+
+      handleInputValueChange(inputValue ?? '')
     },
   })
 

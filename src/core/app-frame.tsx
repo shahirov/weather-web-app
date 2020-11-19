@@ -1,9 +1,8 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useGate, useStore } from 'effector-react'
 import React from 'react'
 import styled from 'styled-components'
 
-import { $isAuthenticated } from '~/features/auth'
+import { $didRequest, $isAuthenticated } from '~/features/auth'
 import { ThemeProvider } from '~/features/theme'
 import { Spin } from '~/ui'
 
@@ -17,20 +16,21 @@ type Props = {
 export const AppFrame = ({ children }: Props) => {
   useGate(AppGate)
 
-  // const isAuthenticated = useStore($isAuthenticated)
+  const isAuthenticated = useStore($isAuthenticated)
+  const didRequest = useStore($didRequest)
 
-  // if (!isAuthenticated) {
-  //   return (
-  //     <>
-  //       <GlobalStyle />
-  //       <Layout>
-  //         <SpinSection>
-  //           <Spin tip="Launching Weatherio..." />
-  //         </SpinSection>
-  //       </Layout>
-  //     </>
-  //   )
-  // }
+  if (!isAuthenticated && !didRequest) {
+    return (
+      <>
+        <GlobalStyle />
+        <Layout>
+          <SpinSection>
+            <Spin tip="Launching Weatherio..." />
+          </SpinSection>
+        </Layout>
+      </>
+    )
+  }
 
   return (
     <ThemeProvider>

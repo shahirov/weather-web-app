@@ -2,20 +2,15 @@ import './init'
 
 import { useStore } from 'effector-react'
 import React from 'react'
-import { NavLink, Route, Switch as RouterSwitch } from 'react-router-dom'
+import { renderRoutes } from 'react-router-config'
+import { NavLink } from 'react-router-dom'
 import styled from 'styled-components'
 
 import HamburgerIcon from '~/assets/icons/hamburger.svg'
 import { $isAuthenticated, $user, logout } from '~/features/auth'
 import { $theme, toggleTheme } from '~/features/theme'
 import { getTodaysDate } from '~/lib/date-fns'
-import { AddPage } from '~/pages/add'
-import { DetailsPage } from '~/pages/details'
-import { Error404Page } from '~/pages/error'
-import { HomePage } from '~/pages/home'
-import { LoginPage } from '~/pages/login'
 import { paths } from '~/pages/paths'
-import { SignupPage } from '~/pages/signup'
 import {
   AppBar,
   Avatar,
@@ -28,21 +23,20 @@ import {
   Switch,
 } from '~/ui'
 
+import { makeRoutes } from './routes'
+
 export const Root = () => {
   const isAuthenticated = useStore($isAuthenticated)
+
+  const routes = React.useMemo(
+    () => renderRoutes(makeRoutes(isAuthenticated)),
+    [isAuthenticated],
+  )
+
   return (
     <>
       {isAuthenticated && <AppHeader />}
-      <Main>
-        <RouterSwitch>
-          <Route exact path={paths.home} component={HomePage} />
-          <Route exact path={paths.add} component={AddPage} />
-          <Route exact path={paths.details} component={DetailsPage} />
-          <Route exact path={paths.signup} component={SignupPage} />
-          <Route exact path={paths.login} component={LoginPage} />
-          <Route path="*" component={Error404Page} />
-        </RouterSwitch>
-      </Main>
+      <Main>{routes}</Main>
     </>
   )
 }

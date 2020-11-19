@@ -11,6 +11,7 @@ export const timeout = createEffect(
 )
 
 export const $favoriteCityName = createStore('Moscow')
+export const $selectedCityweatherData = createStore<WeatherData | null>(null)
 export const $favoriteCityWeatherData = createStore<WeatherData | null>(null)
 export const $cityAdded = createStore<boolean>(false)
 

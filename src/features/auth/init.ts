@@ -8,7 +8,7 @@ import {
 } from '~/api/auth'
 import { getUserProfileFx } from '~/api/users'
 
-import { $user, logout } from './model'
+import { $didRequest, $user, logout } from './model'
 
 $user
   .on(
@@ -20,6 +20,8 @@ $user
     (_, user) => user,
   )
   .reset(logoutFx.done)
+
+$didRequest.on(getUserProfileFx.done, () => true)
 
 /**
  * check firebase authentication session

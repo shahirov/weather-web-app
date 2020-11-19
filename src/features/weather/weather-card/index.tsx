@@ -1,4 +1,3 @@
-import { useGate, useStore } from 'effector-react'
 import React from 'react'
 import { useHistory } from 'react-router-dom'
 import styled, { css } from 'styled-components'
@@ -6,44 +5,49 @@ import styled, { css } from 'styled-components'
 import MaxArrow from '~/assets/icons/max-arrow.svg'
 import MinArrow from '~/assets/icons/min-arrow.svg'
 import Sun from '~/assets/icons/sun.svg'
-import { $citiesWeatherData, addCity, InitGate } from '~/features/weather/model'
+import { addCity } from '~/features/weather/model'
 import { Button } from '~/ui/button'
 import { Row } from '~/ui/row'
 
 type Props = {
   cityName: string
+  temperature: number
+  condition: string
+  minTemperature: number
+  maxTemperature: number
   showActionButton?: boolean
 }
 
-export const WeatherCard = ({ cityName, showActionButton = false }: Props) => {
-  useGate(InitGate, cityName)
-
+export const WeatherCard = ({
+  cityName,
+  temperature,
+  maxTemperature,
+  minTemperature,
+  condition,
+  showActionButton = false,
+}: Props) => {
   const history = useHistory()
-  const citiesWeatherData = useStore($citiesWeatherData)
-  const cityWeatherData = citiesWeatherData[cityName]
-
-  if (
-    Object.values(citiesWeatherData).length === 0 ||
-    cityWeatherData === undefined
-  ) {
-    return null
-  }
 
   const handleClick = () => {
+    if (showActionButton) return
     history.push(`/details/${cityName.toLowerCase()}`)
   }
 
-  const { name, main, weather } = cityWeatherData
-
   return (
-    <Row as={Card} onClick={handleClick} direction="column" align="center">
-      <CityName>{name}</CityName>
+    <Row
+      as={Card}
+      onClick={handleClick}
+      actionButtonShowed={showActionButton}
+      direction="column"
+      align="center"
+    >
+      <CityName>{cityName}</CityName>
       <WeatherIconContainer>
         <Sun />
       </WeatherIconContainer>
       <Row direction="column" align="center">
-        <TemperatureMetric>{Math.round(main.temp)}°</TemperatureMetric>
-        <WeatherCondition>{weather[0].main}</WeatherCondition>
+        <TemperatureMetric>{temperature}°</TemperatureMetric>
+        <WeatherCondition>{condition}</WeatherCondition>
       </Row>
       <Row as={MinMaxContainer} align="center">
         <Row
@@ -53,7 +57,7 @@ export const WeatherCard = ({ cityName, showActionButton = false }: Props) => {
           justify="center"
         >
           <MinArrowIcon />
-          <MinTemperatureText>{Math.round(main.temp_min)}</MinTemperatureText>
+          <MinTemperatureText>{minTemperature}</MinTemperatureText>
           <MinText>Min</MinText>
         </Row>
         <Row
@@ -63,7 +67,7 @@ export const WeatherCard = ({ cityName, showActionButton = false }: Props) => {
           justify="center"
         >
           <MaxArrowIcon />
-          <MaxTemperatureText>{Math.round(main.temp_max)}</MaxTemperatureText>
+          <MaxTemperatureText>{maxTemperature}</MaxTemperatureText>
           <MaxText>Max</MaxText>
         </Row>
       </Row>
@@ -76,7 +80,7 @@ export const WeatherCard = ({ cityName, showActionButton = false }: Props) => {
   )
 }
 
-const Card = styled.section`
+const Card = styled.section<{ actionButtonShowed: boolean }>`
   position: relative;
   margin: 2rem;
   padding: 2rem;
@@ -87,7 +91,7 @@ const Card = styled.section`
   box-shadow: 0 0 2rem rgb(0 0 255 / 10%);
   border-radius: 1.75rem;
   animation: 1s ease-in-out slide-up, 1.5s ease-in-out fade-in;
-  cursor: pointer;
+  cursor: ${({ actionButtonShowed }) => !actionButtonShowed && 'pointer'};
 `
 
 const CityName = styled.span`

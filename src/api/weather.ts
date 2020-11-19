@@ -1,7 +1,14 @@
 import axios, { AxiosError, AxiosResponse } from 'axios'
 import { createEffect } from 'effector'
 
-import { ForecastData, Params, UnitMeasurement, WeatherData } from './types'
+import {
+  CityModel,
+  CityWeatherData,
+  ForecastData,
+  Params,
+  UnitMeasurement,
+  WeatherData,
+} from './types'
 
 const API_ENDPOINT = 'https://api.openweathermap.org/data/2.5'
 
@@ -29,6 +36,27 @@ export const getWeatherDataByCityNameFx = createEffect<
   }),
 )
 
+export const getCitiesWeatherData = createEffect<
+  { cities: CityModel[]; units?: UnitMeasurement },
+  Record<string, WeatherData>,
+  AxiosError
+>(async ({ cities, units = 'metric' }) => {
+  const citiesWeatherDataMap: Record<string, WeatherData> = {}
+
+  for (const city of cities) {
+    // eslint-disable-next-line no-await-in-loop
+    const { data } = await request.get<WeatherData>('weather', {
+      params: {
+        q: city.name,
+        units,
+      },
+    })
+    citiesWeatherDataMap[data.name] = { ...data }
+  }
+
+  return citiesWeatherDataMap
+})
+
 export const getFavoriteCityWeatherDataFx = createEffect<
   {
     cityName: string
@@ -44,6 +72,29 @@ export const getFavoriteCityWeatherDataFx = createEffect<
     },
   }),
 )
+
+export const getWeatherDataForCity = createEffect<
+  {
+    cityName: string
+    units?: UnitMeasurement
+  },
+  CityWeatherData,
+  AxiosError
+>(async ({ cityName, units = 'metric' }) => {
+  const { data } = await request.get<WeatherData>('weather', {
+    params: {
+      q: cityName,
+      units,
+    },
+  })
+
+  return {
+    temperature: Math.ceil(data.main.temp),
+    condition: data.weather[0].main,
+    wind: Math.ceil(data.wind.speed),
+    humidity: data.main.humidity,
+  }
+})
 
 export const getForecastDataByCityNameFx = createEffect<
   {

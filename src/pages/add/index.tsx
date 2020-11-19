@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import favCityUrl from '~/assets/fav-city.jpg'
 import CheckMark from '~/assets/icons/check.svg'
 import SunIcon from '~/assets/icons/sun.svg'
-import { $selectedCity, SearchField } from '~/features/search'
+import { SearchField } from '~/features/search/search-field'
 import { WeatherCard } from '~/features/weather'
 import { getTodaysDate } from '~/lib/date-fns'
 import { Cell, Grid, Row } from '~/ui'
@@ -14,28 +14,24 @@ import {
   $cityAdded,
   $favoriteCityFollowed,
   $favoriteCityWeatherData,
+  $selectedCityweatherData,
   AddPageGate,
 } from './model'
 
 export const AddPage = () => {
   useGate(AddPageGate)
 
-  const selectedCity = useStore($selectedCity)
-  const favoriteCityWeatherData = useStore($favoriteCityWeatherData)
   const cityAdded = useStore($cityAdded)
   const favoriteCityFollowed = useStore($favoriteCityFollowed)
+  const selectedCityWeatherData = useStore($selectedCityweatherData)
+  const favoriteCityWeatherData = useStore($favoriteCityWeatherData)
 
   const temperature = favoriteCityWeatherData
-    ? Math.round(favoriteCityWeatherData.main.temp)
+    ? Math.ceil(favoriteCityWeatherData.main.temp)
     : ''
   const condition = favoriteCityWeatherData
     ? favoriteCityWeatherData.weather[0].main
     : ''
-
-  const renderWeatherCard = !cityAdded && selectedCity && (
-    <WeatherCard cityName={selectedCity.name} showActionButton />
-  )
-  const renderSuccessNote = cityAdded && <SuccessMessage />
 
   return (
     <Grid
@@ -52,8 +48,17 @@ export const AddPage = () => {
           <CitySearchHr>O O O</CitySearchHr>
         </Row>
         <Row as={CitySearchBody} justify="center">
-          {renderWeatherCard}
-          {renderSuccessNote}
+          {selectedCityWeatherData && !cityAdded && (
+            <WeatherCard
+              cityName={selectedCityWeatherData.name}
+              temperature={Math.ceil(selectedCityWeatherData.main.temp)}
+              maxTemperature={Math.ceil(selectedCityWeatherData.main.temp_max)}
+              minTemperature={Math.ceil(selectedCityWeatherData.main.temp_min)}
+              condition={selectedCityWeatherData.weather[0].main}
+              showActionButton
+            />
+          )}
+          {cityAdded && <SuccessMessage />}
         </Row>
       </Cell>
       <Cell as={FavoriteCityWrapper} area="fav-city">
