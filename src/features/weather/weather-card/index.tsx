@@ -4,10 +4,8 @@ import styled, { css } from 'styled-components'
 
 import MaxArrow from '~/assets/icons/max-arrow.svg'
 import MinArrow from '~/assets/icons/min-arrow.svg'
-import Sun from '~/assets/icons/sun.svg'
 import { addCity } from '~/features/weather/model'
-import { Button } from '~/ui/button'
-import { Row } from '~/ui/row'
+import { Button, Row, WeatherIcon } from '~/ui'
 
 type Props = {
   cityName: string
@@ -43,7 +41,7 @@ export const WeatherCard = ({
     >
       <CityName>{cityName}</CityName>
       <WeatherIconContainer>
-        <Sun />
+        <WeatherIcon condition={condition} />
       </WeatherIconContainer>
       <Row direction="column" align="center">
         <TemperatureMetric>{temperature}°</TemperatureMetric>

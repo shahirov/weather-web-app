@@ -4,11 +4,10 @@ import styled from 'styled-components'
 
 import favCityUrl from '~/assets/fav-city.jpg'
 import CheckMark from '~/assets/icons/check.svg'
-import SunIcon from '~/assets/icons/sun.svg'
 import { SearchField } from '~/features/search/search-field'
 import { WeatherCard } from '~/features/weather'
 import { getTodaysDate } from '~/lib/date-fns'
-import { Cell, Grid, Row } from '~/ui'
+import { Cell, Grid, Row, WeatherIcon } from '~/ui'
 
 import {
   $cityAdded,
@@ -70,9 +69,11 @@ export const AddPage = () => {
           <FavoriteCityDate>{getTodaysDate()}</FavoriteCityDate>
         </Row>
         <Row as={FavoriteCityBody} direction="column" align="center">
-          <FavoriteCityWeatherIcon>
-            <SunIcon />
-          </FavoriteCityWeatherIcon>
+          <FavoriteCityWeatherIconContainer>
+            <WeatherIcon
+              condition={favoriteCityWeatherData?.weather[0].main || 'Sun'}
+            />
+          </FavoriteCityWeatherIconContainer>
           <Row as={FavoriteCityWeatherInfo} direction="column" align="center">
             <FavoriteCityTemperature>{temperature}°</FavoriteCityTemperature>
             <FavoriteCityName>
@@ -192,7 +193,7 @@ const FavoriteCityBody = styled.div`
   margin-top: 2rem;
 `
 
-const FavoriteCityWeatherIcon = styled.div`
+const FavoriteCityWeatherIconContainer = styled.div`
   width: 9rem;
 `
 

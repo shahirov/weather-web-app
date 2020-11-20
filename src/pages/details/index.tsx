@@ -4,8 +4,7 @@ import { RouteComponentProps, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 
 import BackIcon from '~/assets/icons/back-button.svg'
-import Sun from '~/assets/icons/sun.svg'
-import { Cell, Grid, Row } from '~/ui'
+import { Cell, Grid, Row, WeatherIcon } from '~/ui'
 
 import { $cityWeatherData, $daysForecastData, DetailsPageGate } from './model'
 
@@ -48,12 +47,12 @@ export const DetailsPage = ({ history }: RouteComponentProps) => {
               <Row as={HumWindContainer} align="center">
                 <Row direction="column" justify="center" align="center">
                   <HumText>Humidity</HumText>
-                  <HumValue>{humidity}%</HumValue>
+                  <span>{humidity}%</span>
                 </Row>
                 <HumWindSeparator>&nbsp;</HumWindSeparator>
                 <Row direction="column" justify="center" align="center">
                   <WindText>Wind</WindText>
-                  <WindValue>{wind} K/M</WindValue>
+                  <span>{wind} K/M</span>
                 </Row>
               </Row>
             </Cell>
@@ -65,7 +64,7 @@ export const DetailsPage = ({ history }: RouteComponentProps) => {
           </Grid>
         </CardHeader>
         <CardBody>
-          <Row as={ForecastContainer} align="center" justify="space-around">
+          <Row align="center" justify="space-around">
             {forecastData &&
               Object.entries(forecastData).map(([day, data]) => (
                 <Row
@@ -76,7 +75,9 @@ export const DetailsPage = ({ history }: RouteComponentProps) => {
                   justify="center"
                 >
                   <DayWeatherText>{day}</DayWeatherText>
-                  <SunIcon />
+                  <WeatherIconContainer>
+                    <WeatherIcon condition={data.condition} />
+                  </WeatherIconContainer>
                   <DayTemperatureText>{data.temperature}°</DayTemperatureText>
                   <DayStateText>{data.condition}</DayStateText>
                 </Row>
@@ -200,8 +201,6 @@ const HumText = styled.span`
   text-transform: uppercase;
 `
 
-const HumValue = styled.span``
-
 const HumWindSeparator = styled.div`
   margin: 0 2rem;
   width: 2px;
@@ -215,8 +214,6 @@ const WindText = styled.span`
   letter-spacing: 0.2rem;
   text-transform: uppercase;
 `
-
-const WindValue = styled.span``
 
 const CityNameContainer = styled.div`
   padding-bottom: 35%;
@@ -245,10 +242,13 @@ const CardBody = styled.div`
   padding: 2rem;
 `
 
-const ForecastContainer = styled.div``
-
 const DayWeatherContainer = styled.div`
   margin: 2rem 1.5rem;
+`
+
+const WeatherIconContainer = styled.div`
+  width: 4rem;
+  height: 4rem;
 `
 
 const DayWeatherText = styled.span`
@@ -257,10 +257,6 @@ const DayWeatherText = styled.span`
   font-weight: 700;
   text-transform: uppercase;
   color: #39437a;
-`
-
-const SunIcon = styled(Sun)`
-  height: 4rem;
 `
 
 const DayTemperatureText = styled.span`
