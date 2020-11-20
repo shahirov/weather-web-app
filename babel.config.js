@@ -41,7 +41,7 @@ module.exports = {
   ],
   plugins: [
     ['babel-plugin-styled-components', pluginStyledComponents],
-    [isDevelopment && 'react-refresh/babel'],
+    isDevelopment && 'react-refresh/babel',
     ['effector/babel-plugin', (isDevelopment || isTest) && pluginEffector],
-  ],
+  ].filter(Boolean),
 }
