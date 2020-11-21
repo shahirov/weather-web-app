@@ -35,15 +35,8 @@ export const SearchField = () => {
     selectedItem: selectedCity,
     itemToString: (item) => (item ? item.name : ''),
     // eslint-disable-next-line @typescript-eslint/no-shadow
-    onInputValueChange: ({ inputValue, type }) => {
+    onInputValueChange: ({ inputValue }) => {
       if (!inputValue) closeMenu()
-
-      if (
-        type === useCombobox.stateChangeTypes.InputKeyDownEnter ||
-        type === useCombobox.stateChangeTypes.ItemClick
-      ) {
-        return
-      }
 
       handleInputValueChange(inputValue ?? '')
     },

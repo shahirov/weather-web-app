@@ -5,6 +5,7 @@ import {
   getFavoriteCityWeatherDataFx,
   getWeatherDataByCityNameFx,
 } from '~/api/weather'
+import { $cities } from '~/features/cities'
 import { $selectedCity } from '~/features/search'
 
 import {
@@ -18,13 +19,15 @@ import {
 
 $selectedCityweatherData
   .on(getWeatherDataByCityNameFx.doneData, (_, { data }) => data)
-  .reset([AddPageGate.open, AddPageGate.close])
+  .reset([AddPageGate.open, AddPageGate.close, addCityFx.done])
 
 $favoriteCityWeatherData
   .on(getFavoriteCityWeatherDataFx.doneData, (_, { data }) => data)
   .reset(AddPageGate.close)
 
 $cityAdded.on(addCityFx.done, () => true).reset(timeout.done)
+
+$cities.reset(AddPageGate.close)
 
 forward({
   from: addCityFx.done,
