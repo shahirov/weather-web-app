@@ -6,15 +6,13 @@ const isDevelopment =
 const presetReact = {
   development: isDevelopment,
   useBuiltIns: true,
+  runtime: 'automatic'
 }
 
 const presetEnv = {
-  loose: true,
   useBuiltIns: 'usage',
   corejs: 3,
-  modules: isTest ? 'commonjs' : 'auto',
-  shippedProposals: true,
-  bugfixes: true, // remove later in babel 8
+  modules: isTest ? 'commonjs' : 'auto'
 }
 
 const presetTypescript = {
@@ -29,8 +27,7 @@ const pluginStyledComponents = {
 }
 
 const pluginEffector = {
-  addLoc: true,
-  importName: ['effector'],
+  addLoc: true
 }
 
 module.exports = {

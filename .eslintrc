@@ -19,6 +19,7 @@
   },
   "extends": [
     "plugin:unicorn/recommended",
+    "plugin:testing-library/recommended",
     "plugin:jest/recommended",
     "plugin:import/typescript",
     "plugin:@typescript-eslint/recommended-requiring-type-checking",
@@ -44,7 +45,7 @@
       "rules": {
         "sort-imports": "off",
         "import/order": "off",
-        "simple-import-sort/sort": [
+        "simple-import-sort/imports": [
           "error",
           {
             "groups": [
@@ -69,12 +70,11 @@
     {
       "files": ["src/**/*.tsx"],
       "rules": {
-        "@typescript-eslint/explicit-module-boundary-types": "off",
-        "@typescript-eslint/no-use-before-define": "off"
+        "@typescript-eslint/explicit-module-boundary-types": "off"
       }
     },
     {
-      "files": ["config/**/*.js"],
+      "files": ["webpack/**/*.js"],
       "rules": {
         "import/no-default-export": "off",
         "import/no-extraneous-dependencies": "off",
@@ -91,19 +91,12 @@
       "rules": {
         "import/no-default-export": "off"
       }
-    },
-    {
-      "files": ["src/pages/paths.ts"],
-      "rules": {
-        "@typescript-eslint/explicit-module-boundary-types": "off"
-      }
     }
   ],
   "rules": {
-    "react/jsx-filename-extension": [
-      "error",
-      { "extensions": [".jsx", ".tsx"] }
-    ],
+    "react/jsx-uses-react": "off",
+    "react/react-in-jsx-scope": "off",
+    "react/jsx-filename-extension": ["error", { "extensions": [".jsx", ".tsx"] }],
     "import/extensions": [
       "error",
       "ignorePackages",
@@ -155,13 +148,22 @@
           "param": true,
           "Param": true,
           "config": true,
-          "Config": true
+          "Config": true,
+          "resolveFn": true
         }
       }
     ],
     "unicorn/no-null": "off",
     "unicorn/no-fn-reference-in-iterator": "off",
-    "react/require-default-props": "off",
-    "@typescript-eslint/comma-dangle": "off"
+    "react/require-default-props": [
+      "warn",
+      {
+        "forbidDefaultForRequired": true,
+        "ignoreFunctionalComponents": true
+      }
+    ],
+    "@typescript-eslint/comma-dangle": "off",
+    "@typescript-eslint/no-shadow": "off",
+    "@typescript-eslint/no-use-before-define": "off"
   }
 }
