@@ -6,6 +6,7 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const safePostCssParser = require('postcss-safe-parser')
 const postcssNormalize = require('postcss-normalize')
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
 
 const paths = require('./paths')
 const common = require('./webpack.common')
@@ -53,7 +54,7 @@ module.exports = merge(common, {
       }),
     ],
     splitChunks: {
-      chunks: 'all'
+      chunks: 'all',
     },
     runtimeChunk: {
       name: (entrypoint) => `runtime-${entrypoint.name}`,
@@ -62,20 +63,10 @@ module.exports = merge(common, {
   module: {
     rules: [
       {
-        test: /\.(js|jsx|ts|tsx)$/,
-        include: paths.appSrc,
-        loader: 'babel-loader',
-        options: {
-          cacheDirectory: true,
-          cacheCompression: false,
-          compact: true,
-        },
-      },
-      {
         test: /\.css$/,
         exclude: /\.module\.css$/,
         use: [
-          'style-loader',
+          require.resolve('style-loader'),
           {
             loader: MiniCssExtractPlugin.loader,
             options: paths.publicUrlOrPath.startsWith('.')
@@ -83,20 +74,20 @@ module.exports = merge(common, {
               : {},
           },
           {
-            loader: 'css-loader',
+            loader: require.resolve('css-loader'),
             options: {
               importLoaders: 1,
               sourceMap: false,
             },
           },
           {
-            loader: 'postcss-loader',
+            loader: require.resolve('postcss-loader'),
             options: {
               ident: 'postcss',
               postcssOptions: [],
               plugins: [
                 [
-                  'postcss-preset-env',
+                  require.resolve('postcss-preset-env'),
                   {
                     autoprefixer: {
                       flexbox: 'no-2009',
@@ -114,9 +105,9 @@ module.exports = merge(common, {
       {
         test: /\.module\.css$/,
         use: [
-          'style-loader',
+          require.resolve('style-loader'),
           {
-            loader: 'css-loader',
+            loader: require.resolve('css-loader'),
             options: {
               importLoaders: 1,
               sourceMap: false,
@@ -124,13 +115,13 @@ module.exports = merge(common, {
             },
           },
           {
-            loader: 'postcss-loader',
+            loader: require.resolve('postcss-loader'),
             options: {
               ident: 'postcss',
               postcssOptions: [],
               plugins: [
                 [
-                  'postcss-preset-env',
+                  require.resolve('postcss-preset-env'),
                   {
                     autoprefixer: {
                       flexbox: 'no-2009',
@@ -149,14 +140,20 @@ module.exports = merge(common, {
   },
   plugins: [
     new CleanWebpackPlugin(),
-    new webpack.DefinePlugin({
-      'process.env': {
-        'NODE_ENV': JSON.stringify('production'),
-      }
-    }),
     new MiniCssExtractPlugin({
       filename: 'css/[name].[contenthash:8].css',
       chunkFilename: 'css/[name].[contenthash:8].chunk.css',
+    }),
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: JSON.stringify('production'),
+      },
+    }),
+    new ForkTsCheckerWebpackPlugin({
+      async: false,
+      typescript: {
+        memoryLimit: 4096,
+      },
     }),
   ],
 })

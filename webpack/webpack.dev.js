@@ -6,13 +6,14 @@ const ErrorOverlayPlugin = require('error-overlay-webpack-plugin')
 const CircularDependencyPlugin = require('circular-dependency-plugin')
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin')
 const postcssNormalize = require('postcss-normalize')
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
 
 const paths = require('./paths')
 const common = require('./webpack.common')
 
 module.exports = merge(common, {
   mode: 'development',
-  devtool: 'eval-source-map',
+  devtool: 'cheap-module-source-map',
   output: {
     pathinfo: true,
     filename: 'js/bundle.js',
@@ -38,35 +39,25 @@ module.exports = merge(common, {
   module: {
     rules: [
       {
-        test: /\.(js|jsx|ts|tsx)$/,
-        include: paths.appSrc,
-        loader: 'babel-loader',
-        options: {
-          cacheDirectory: true,
-          cacheCompression: false,
-          compact: false,
-        },
-      },
-      {
         test: /\.css$/,
         exclude: /\.module\.css$/,
         use: [
-          'style-loader',
+          require.resolve('style-loader'),
           {
-            loader: 'css-loader',
+            loader: require.resolve('css-loader'),
             options: {
               importLoaders: 1,
               sourceMap: true,
             },
           },
           {
-            loader: 'postcss-loader',
+            loader: require.resolve('postcss-loader'),
             options: {
               ident: 'postcss',
               postcssOptions: [],
               plugins: [
                 [
-                  'postcss-preset-env',
+                  require.resolve('postcss-preset-env'),
                   {
                     autoprefixer: {
                       flexbox: 'no-2009',
@@ -84,9 +75,9 @@ module.exports = merge(common, {
       {
         test: /\.module\.css$/,
         use: [
-          'style-loader',
+          require.resolve('style-loader'),
           {
-            loader: 'css-loader',
+            loader: require.resolve('css-loader'),
             options: {
               importLoaders: 1,
               sourceMap: true,
@@ -94,13 +85,13 @@ module.exports = merge(common, {
             },
           },
           {
-            loader: 'postcss-loader',
+            loader: require.resolve('postcss-loader'),
             options: {
               ident: 'postcss',
               postcssOptions: [],
               plugins: [
                 [
-                  'postcss-preset-env',
+                  require.resolve('postcss-preset-env'),
                   {
                     autoprefixer: {
                       flexbox: 'no-2009',
@@ -130,5 +121,6 @@ module.exports = merge(common, {
     }),
     new ErrorOverlayPlugin(),
     new FriendlyErrorsWebpackPlugin(),
+    new ForkTsCheckerWebpackPlugin(),
   ],
 })

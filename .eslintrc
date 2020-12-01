@@ -83,6 +83,18 @@
       }
     },
     {
+      "files": ["src/features/**/slice.ts"],
+      "rules": {
+        "no-param-reassign": "off"
+      }
+    },
+    {
+      "files": ["src/index.tsx"],
+      "rules": {
+        "@typescript-eslint/no-floating-promises": "off"
+      }
+    },
+    {
       "files": ["webpack/**/*.js"],
       "rules": {
         "import/no-default-export": "off",
@@ -173,6 +185,7 @@
     ],
     "@typescript-eslint/comma-dangle": "off",
     "@typescript-eslint/no-shadow": "off",
-    "@typescript-eslint/no-use-before-define": "off"
+    "@typescript-eslint/no-use-before-define": "off",
+    "@typescript-eslint/unbound-method": "off"
   }
 }
