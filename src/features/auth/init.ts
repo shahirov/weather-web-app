@@ -8,7 +8,7 @@ import {
 } from '~/api/auth'
 import { getUserProfileFx } from '~/api/users'
 
-import { $didRequest, $user, logout } from './model'
+import { $didRequest, $user, logoutEffector } from './model'
 
 $user
   .on(
@@ -33,6 +33,6 @@ forward({
 })
 
 forward({
-  from: logout,
+  from: logoutEffector,
   to: logoutFx,
 })

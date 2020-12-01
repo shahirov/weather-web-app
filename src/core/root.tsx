@@ -2,12 +2,13 @@ import './init'
 
 import { useStore } from 'effector-react'
 import React from 'react'
-import { renderRoutes } from 'react-router-config'
+import { useDispatch, useSelector } from 'react-redux'
+import { renderRoutes, RouteConfig } from 'react-router-config'
 import { NavLink } from 'react-router-dom'
 import styled from 'styled-components'
 
 import HamburgerIcon from '~/assets/icons/hamburger.svg'
-import { $isAuthenticated, $user, logout } from '~/features/auth'
+import { logout, selectIsUserAuthenticated, selectUser } from '~/features/auth'
 import { $theme, toggleTheme } from '~/features/theme'
 import { getTodaysDate } from '~/lib/date-fns'
 import { paths } from '~/pages/paths'
@@ -26,23 +27,24 @@ import {
 import { makeRoutes } from './routes'
 
 export const Root = () => {
-  const isAuthenticated = useStore($isAuthenticated)
+  const [routes, setRoutes] = React.useState<RouteConfig[]>([])
+  const isAuthenticated = useSelector(selectIsUserAuthenticated)
 
-  const routes = React.useMemo(
-    () => renderRoutes(makeRoutes(isAuthenticated)),
-    [isAuthenticated],
-  )
+  React.useEffect(() => {
+    setRoutes(makeRoutes(isAuthenticated))
+  }, [isAuthenticated])
 
   return (
     <>
       {isAuthenticated && <AppHeader />}
-      <Main>{routes}</Main>
+      <Main>{renderRoutes(routes)}</Main>
     </>
   )
 }
 
 const AppHeader = () => {
-  const user = useStore($user)
+  const dispatch = useDispatch()
+  const user = useSelector(selectUser)
   const theme = useStore($theme)
   const [opened, setOpened] = React.useState(false)
 
@@ -72,6 +74,10 @@ const AppHeader = () => {
     },
     [],
   )
+
+  const handleLogout = () => {
+    dispatch(logout())
+  }
 
   return (
     <AppBar>
@@ -156,7 +162,7 @@ const AppHeader = () => {
               </Item>
             </li>
             <li>
-              <LogoutButton type="button" onClick={logout}>
+              <LogoutButton type="button" onClick={handleLogout}>
                 Logout
               </LogoutButton>
             </li>

@@ -1,25 +1,22 @@
-import { useGate, useStore } from 'effector-react'
 import React from 'react'
+import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 
-import { $didRequest, $isAuthenticated } from '~/features/auth'
+import { selectIsAuthChecked, selectIsUserAuthenticated } from '~/features/auth'
 import { ThemeProvider } from '~/features/theme'
 import { Spin } from '~/ui'
 
 import { GlobalStyle } from './global-style'
-import { AppGate } from './model'
 
 type Props = {
   children: React.ReactNode
 }
 
 export const AppFrame = ({ children }: Props) => {
-  useGate(AppGate)
+  const isAuthenticated = useSelector(selectIsUserAuthenticated)
+  const authChecked = useSelector(selectIsAuthChecked)
 
-  const isAuthenticated = useStore($isAuthenticated)
-  const didRequest = useStore($didRequest)
-
-  if (!isAuthenticated && !didRequest) {
+  if (!isAuthenticated && !authChecked) {
     return (
       <>
         <GlobalStyle />

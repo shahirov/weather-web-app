@@ -1,49 +1,74 @@
-import { useGate, useStore } from 'effector-react'
 import React from 'react'
+import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
 
-import { Button, Field, FormCard, FormNotice, Row } from '~/ui'
+import { useAppDispatch } from '~/core/store'
+import { AuthError, signInWithEmail } from '~/features/auth'
+import { addAuthError } from '~/lib/utils'
+import { Button, FormCard, FormNotice, Input, Row } from '~/ui'
 
-import {
-  $errors,
-  $isSubmitting,
-  $isValid,
-  $values,
-  handleChange,
-  handleSubmit,
-  LoginPageGate,
-} from './model'
+type FormValues = {
+  email: string
+  password: string
+}
 
 export const LoginPage = () => {
-  useGate(LoginPageGate)
+  const dispatch = useAppDispatch()
+  const {
+    register,
+    handleSubmit,
+    errors,
+    setError,
+    formState: { isSubmitting },
+  } = useForm<FormValues>()
 
-  const { email, password } = useStore($values)
-  const errors = useStore($errors)
-  const submitting = useStore($isSubmitting)
-  const valid = useStore($isValid)
+  const onSubmit = async ({ email, password }: FormValues) => {
+    const action = await dispatch(signInWithEmail({ email, password }))
+    if (signInWithEmail.rejected.match(action)) {
+      addAuthError(action.payload as AuthError, setError)
+    }
+  }
 
   return (
     <FormCard title="Login" text="Welcome Back!">
-      <Form as="form" onSubmit={handleSubmit} direction="column" align="center">
-        <Field
+      <Form
+        as="form"
+        onSubmit={handleSubmit(onSubmit)}
+        direction="column"
+        align="center"
+      >
+        <Input
           type="email"
           name="email"
           placeholder="Email"
-          value={email}
-          onChange={handleChange}
-          disabled={submitting}
-          error={errors.email}
+          ref={register({
+            required: 'Please enter your email',
+            // eslint-disable-next-line @typescript-eslint/prefer-regexp-exec
+            pattern: {
+              value: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/,
+              message: 'Please enter a valid email address',
+            },
+          })}
+          disabled={isSubmitting}
         />
-        <Field
+        {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
+        <Input
           type="password"
           name="password"
           placeholder="Password"
-          value={password}
-          onChange={handleChange}
-          disabled={submitting}
-          error={errors.password}
+          ref={register({
+            required: 'Please enter your password',
+            minLength: {
+              value: 6,
+              message: 'Password should be at least 6 characters long',
+            },
+          })}
+          disabled={isSubmitting}
         />
-        <Button type="submit" disabled={submitting || !valid}>
+        {errors.password && (
+          <ErrorMessage>{errors.password.message}</ErrorMessage>
+        )}
+        <Button type="submit" disabled={isSubmitting}>
           Login
         </Button>
       </Form>
@@ -59,4 +84,10 @@ export const LoginPage = () => {
 const Form = styled(Row)`
   width: 80%;
   animation: 2s ease-in-out slide-down;
+`
+
+const ErrorMessage = styled.div`
+  width: 100%;
+  padding-left: 0.63rem;
+  color: #ff0000;
 `

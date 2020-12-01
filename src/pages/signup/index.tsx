@@ -1,55 +1,73 @@
-import { useGate, useStore } from 'effector-react'
 import React from 'react'
+import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
 
-import { Button, Field, FormCard, FormNotice, Row } from '~/ui'
+import { useAppDispatch } from '~/core/store'
+import { AuthError, signUpWithEmail } from '~/features/auth'
+import { addAuthError } from '~/lib/utils'
+import { Button, FormCard, FormNotice, Input, Row } from '~/ui'
 
-import {
-  $errors,
-  $isSubmitting,
-  $isValid,
-  $values,
-  handleChange,
-  handleSubmit,
-  SignUpPageGate,
-} from './model'
+type FormValues = {
+  email: string
+  password: string
+}
 
 export const SignupPage = () => {
-  useGate(SignUpPageGate)
+  const dispatch = useAppDispatch()
+  const {
+    register,
+    handleSubmit,
+    errors,
+    setError,
+    formState: { isSubmitting },
+  } = useForm<FormValues>({ mode: 'onSubmit' })
 
-  const { email, password } = useStore($values)
-  const errors = useStore($errors)
-  const submitting = useStore($isSubmitting)
-  const valid = useStore($isValid)
+  const onSubmit = async ({ email, password }: FormValues) => {
+    const action = await dispatch(signUpWithEmail({ email, password }))
+    if (signUpWithEmail.rejected.match(action)) {
+      addAuthError(action.payload as AuthError, setError)
+    }
+  }
 
   return (
     <FormCard title="Signup" text="Join Weatherio Today">
       <Form
         as="form"
-        noValidate
-        onSubmit={handleSubmit}
+        onSubmit={handleSubmit(onSubmit)}
         direction="column"
         align="center"
       >
-        <Field
+        <Input
           type="email"
           name="email"
           placeholder="Email"
-          value={email}
-          onChange={handleChange}
-          disabled={submitting}
-          error={errors.email}
+          ref={register({
+            required: 'Please enter your email',
+            validate: (value: string) =>
+              // eslint-disable-next-line @typescript-eslint/prefer-regexp-exec
+              value.match(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/) ||
+              'Please enter a valid email address',
+          })}
+          disabled={isSubmitting}
         />
-        <Field
+        {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
+        <Input
           type="password"
           name="password"
           placeholder="Password"
-          value={password}
-          onChange={handleChange}
-          disabled={submitting}
-          error={errors.password}
+          ref={register({
+            required: 'Please enter your password',
+            minLength: {
+              value: 6,
+              message: 'Password should be at least 6 characters long',
+            },
+          })}
+          disabled={isSubmitting}
         />
-        <Button type="submit" disabled={submitting || !valid}>
+        {errors.password && (
+          <ErrorMessage>{errors.password.message}</ErrorMessage>
+        )}
+        <Button type="submit" disabled={isSubmitting}>
           Signup
         </Button>
       </Form>
@@ -65,4 +83,10 @@ export const SignupPage = () => {
 const Form = styled(Row)`
   width: 85%;
   animation: 2s ease-in-out slide-down;
+`
+
+const ErrorMessage = styled.div`
+  width: 100%;
+  padding-left: 0.63rem;
+  color: #ff0000;
 `

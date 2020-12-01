@@ -64,6 +64,7 @@ export const makeRoutes = (isAuth: boolean): RouteConfig[] =>
     {
       path: paths.login,
       exact: true,
+      forAuth: false,
       component: LoginPage,
     },
     {
@@ -75,6 +76,7 @@ export const makeRoutes = (isAuth: boolean): RouteConfig[] =>
     {
       path: paths.signup,
       exact: true,
+      forAuth: false,
       component: SignupPage,
     },
   ].filter(filterRoutes(isAuth))

@@ -6,7 +6,6 @@ export type UserProfile = {
   id: string
   email: string
   photoUrl: string
-  createdAt: Date
 }
 
 export type SortingType = 'countryCode' | 'elevation' | 'name' | 'population'
