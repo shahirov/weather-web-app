@@ -8,7 +8,7 @@ import {
 import { checkAuth, signInViaEmail, signUpViaEmail } from '~/api/auth'
 import { UserProfile } from '~/api/types'
 import { getUserProfile } from '~/api/users'
-import type { RootState } from '~/core'
+import type { RootState } from '~/core/root-reducer'
 import { auth, firebase } from '~/lib/firebase'
 
 interface TypedActionCreator<Type extends string> {

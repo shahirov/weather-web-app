@@ -1,32 +1,50 @@
-import { useGate, useStore } from 'effector-react'
+import { useStore } from 'effector-react'
 import React from 'react'
+import { useSelector } from 'react-redux'
 import styled, { css } from 'styled-components'
 
-import DarkCity from '~/assets/city-illustration-dark.svg'
-import LightCity from '~/assets/city-illustration-light.svg'
-import DarkAdd from '~/assets/icons/add-dark.svg'
-import LightAdd from '~/assets/icons/add-light.svg'
+import { CityModel } from '~/api/types'
+import DarkAdd from '~/assets/images/add-dark.svg'
+import LightAdd from '~/assets/images/add-light.svg'
+import DarkCity from '~/assets/images/city-illustration-dark.svg'
+import LightCity from '~/assets/images/city-illustration-light.svg'
+import { useAppDispatch } from '~/core/store'
+import { selectUser } from '~/features/auth'
+import { getUserCities } from '~/features/cities'
 import { $theme } from '~/features/theme'
-import { WeatherCard } from '~/features/weather'
+import {
+  getCitiesWeather,
+  resetCitiesWeatherData,
+  selectCitiesWeatherData,
+  WeatherCard,
+} from '~/features/weather'
 import { history } from '~/lib/history'
-import { paths } from '~/pages/paths'
 import { Row } from '~/ui'
 
-import { $citiesWeatherData, HomePageGate } from './model'
-
 const handleClick = () => {
-  history.push(paths.add)
+  history.push('/add')
 }
 
 export const HomePage = () => {
-  useGate(HomePageGate)
-
-  const citiesWeatherData = useStore($citiesWeatherData)
+  const dispatch = useAppDispatch()
+  const user = useSelector(selectUser)
+  const citiesWeatherData = useSelector(selectCitiesWeatherData)
   const theme = useStore($theme)
+
+  React.useEffect(() => {
+    dispatch(getUserCities(user)).then((action) => {
+      const cities = action.payload as Record<string, CityModel>
+      dispatch(getCitiesWeather({ cities: Object.values(cities) }))
+    })
+
+    return () => {
+      dispatch(resetCitiesWeatherData())
+    }
+  }, [user, dispatch])
 
   return (
     <Row as={Container} align="center" justify="center">
-      {Object.entries(citiesWeatherData).map(([cityName, data]) => (
+      {citiesWeatherData.map(([cityName, data]) => (
         <WeatherCard
           key={data.id}
           cityName={cityName}

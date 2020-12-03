@@ -1,20 +1,28 @@
-import { useGate, useStore } from 'effector-react'
 import React from 'react'
+import { useSelector } from 'react-redux'
 import { RouteComponentProps, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 
-import BackIcon from '~/assets/icons/back-button.svg'
+import BackIcon from '~/assets/images/back-button.svg'
+import { useAppDispatch } from '~/core/store'
+import {
+  getForecastByCity,
+  getWeatherForCity,
+  selectCityWeatherData,
+  selectDaysForecastData,
+} from '~/features/weather'
 import { Cell, Grid, Row, WeatherIcon } from '~/ui'
 
-import { $cityWeatherData, $daysForecastData, DetailsPageGate } from './model'
-
 export const DetailsPage = ({ history }: RouteComponentProps) => {
-  const { city } = useParams<{ city: string }>()
+  const dispatch = useAppDispatch()
+  const { cityName } = useParams<{ cityName: string }>()
+  const weatherData = useSelector(selectCityWeatherData)
+  const forecastData = useSelector(selectDaysForecastData)
 
-  useGate(DetailsPageGate, city)
-
-  const weatherData = useStore($cityWeatherData)
-  const forecastData = useStore($daysForecastData)
+  React.useEffect(() => {
+    dispatch(getWeatherForCity({ cityName }))
+    dispatch(getForecastByCity({ cityName }))
+  }, [cityName, dispatch])
 
   const handleClick = () => {
     history.goBack()
@@ -58,7 +66,7 @@ export const DetailsPage = ({ history }: RouteComponentProps) => {
             </Cell>
             <Cell as={CityNameContainer} place="center">
               <CityNameUnderline>
-                <CityNameText>{city}</CityNameText>
+                <CityNameText>{cityName}</CityNameText>
               </CityNameUnderline>
             </Cell>
           </Grid>

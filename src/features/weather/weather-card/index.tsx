@@ -2,8 +2,8 @@ import React from 'react'
 import { useHistory } from 'react-router-dom'
 import styled, { css } from 'styled-components'
 
-import MaxArrow from '~/assets/icons/max-arrow.svg'
-import MinArrow from '~/assets/icons/min-arrow.svg'
+import MaxArrow from '~/assets/images/max-arrow.svg'
+import MinArrow from '~/assets/images/min-arrow.svg'
 import { addCity } from '~/features/weather/model'
 import { Button, Row, WeatherIcon } from '~/ui'
 

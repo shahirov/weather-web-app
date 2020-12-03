@@ -1,29 +1,48 @@
-import { useGate, useStore } from 'effector-react'
+import { useStore } from 'effector-react'
 import React from 'react'
+import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 
-import favCityUrl from '~/assets/fav-city.jpg'
-import CheckMark from '~/assets/icons/check.svg'
+import CheckMark from '~/assets/images/check.svg'
+import favCityUrl from '~/assets/images/fav-city.jpg'
+import { useAppDispatch } from '~/core/store'
+import { selectUser } from '~/features/auth'
+import {
+  getUserCities,
+  selectCities,
+  selectIsFavotiteCityFollowed,
+} from '~/features/cities'
 import { SearchField } from '~/features/search/search-field'
-import { WeatherCard } from '~/features/weather'
+import {
+  getFavoriteCityWeather,
+  selectFavoriteCityWeatherData,
+  selectSearchedCityWeatherData,
+  WeatherCard,
+} from '~/features/weather'
 import { getTodaysDate } from '~/lib/date-fns'
 import { Cell, Grid, Row, WeatherIcon } from '~/ui'
 
-import {
-  $cityAdded,
-  $favoriteCityFollowed,
-  $favoriteCityWeatherData,
-  $selectedCityweatherData,
-  AddPageGate,
-} from './model'
+import { $cityAdded } from './model'
 
 export const AddPage = () => {
-  useGate(AddPageGate)
+  const dispatch = useAppDispatch()
+  const user = useSelector(selectUser)
+  const cities = useSelector(selectCities)
+  const favoriteCityWeatherData = useSelector(selectFavoriteCityWeatherData)
+  const favoriteCityFollowed = useSelector(selectIsFavotiteCityFollowed)
+  const searchedCityWeatherData = useSelector(selectSearchedCityWeatherData)
+
+  React.useEffect(() => {
+    if (cities.length === 0) {
+      dispatch(getUserCities(user))
+    }
+  }, [user, dispatch, cities])
+
+  React.useEffect(() => {
+    dispatch(getFavoriteCityWeather())
+  }, [dispatch])
 
   const cityAdded = useStore($cityAdded)
-  const favoriteCityFollowed = useStore($favoriteCityFollowed)
-  const selectedCityWeatherData = useStore($selectedCityweatherData)
-  const favoriteCityWeatherData = useStore($favoriteCityWeatherData)
 
   const temperature = favoriteCityWeatherData
     ? Math.ceil(favoriteCityWeatherData.main.temp)
@@ -47,13 +66,13 @@ export const AddPage = () => {
           <CitySearchHr>O O O</CitySearchHr>
         </Row>
         <Row as={CitySearchBody} justify="center">
-          {selectedCityWeatherData && !cityAdded && (
+          {searchedCityWeatherData && !cityAdded && (
             <WeatherCard
-              cityName={selectedCityWeatherData.name}
-              temperature={Math.ceil(selectedCityWeatherData.main.temp)}
-              maxTemperature={Math.ceil(selectedCityWeatherData.main.temp_max)}
-              minTemperature={Math.ceil(selectedCityWeatherData.main.temp_min)}
-              condition={selectedCityWeatherData.weather[0].main}
+              cityName={searchedCityWeatherData.name}
+              temperature={Math.ceil(searchedCityWeatherData.main.temp)}
+              maxTemperature={Math.ceil(searchedCityWeatherData.main.temp_max)}
+              minTemperature={Math.ceil(searchedCityWeatherData.main.temp_min)}
+              condition={searchedCityWeatherData.weather[0].main}
               showActionButton
             />
           )}

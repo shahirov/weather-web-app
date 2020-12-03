@@ -1,2 +1,2 @@
 export * from './model'
-export { SearchField } from './search-field'
+export * from './slice'

@@ -2,7 +2,7 @@ import { forward, guard, sample } from 'effector'
 
 import {
   getForecastDataByCityNameFx,
-  getWeatherDataForCity,
+  getWeatherDataForCityFx,
 } from '~/api/weather'
 
 import {
@@ -43,7 +43,7 @@ $daysForecastData
   .reset(DetailsPageGate.close)
 
 $cityWeatherData
-  .on(getWeatherDataForCity.doneData, (_, data) => data)
+  .on(getWeatherDataForCityFx.doneData, (_, data) => data)
   .reset(DetailsPageGate.close)
 
 forward({
@@ -54,5 +54,5 @@ forward({
     }),
     fn: (cityName) => ({ cityName }),
   }),
-  to: [getWeatherDataForCity, getForecastDataByCityNameFx],
+  to: [getWeatherDataForCityFx, getForecastDataByCityNameFx],
 })

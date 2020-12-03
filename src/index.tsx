@@ -4,7 +4,7 @@ import { Provider } from 'react-redux'
 import { Router } from 'react-router-dom'
 
 import { App } from './app'
-import { store } from './core'
+import { store } from './core/store'
 import { checkAuthState } from './features/auth'
 import { history } from './lib/history'
 

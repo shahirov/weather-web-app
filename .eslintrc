@@ -117,7 +117,10 @@
   "rules": {
     "react/jsx-uses-react": "off",
     "react/react-in-jsx-scope": "off",
-    "react/jsx-filename-extension": ["error", { "extensions": [".jsx", ".tsx"] }],
+    "react/jsx-filename-extension": [
+      "error",
+      { "extensions": [".jsx", ".tsx"] }
+    ],
     "import/extensions": [
       "error",
       "ignorePackages",
@@ -186,6 +189,7 @@
     "@typescript-eslint/comma-dangle": "off",
     "@typescript-eslint/no-shadow": "off",
     "@typescript-eslint/no-use-before-define": "off",
-    "@typescript-eslint/unbound-method": "off"
+    "@typescript-eslint/unbound-method": "off",
+    "@typescript-eslint/no-floating-promises": "off"
   }
 }

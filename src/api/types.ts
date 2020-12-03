@@ -27,7 +27,6 @@ export type SuggestedCity = {
 export type CityModel = {
   id: number
   name: string
-  createdAt: Date
 }
 
 export type WeatherData = {

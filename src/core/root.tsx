@@ -7,11 +7,10 @@ import { renderRoutes, RouteConfig } from 'react-router-config'
 import { NavLink } from 'react-router-dom'
 import styled from 'styled-components'
 
-import HamburgerIcon from '~/assets/icons/hamburger.svg'
+import HamburgerIcon from '~/assets/images/hamburger.svg'
 import { logout, selectIsUserAuthenticated, selectUser } from '~/features/auth'
 import { $theme, toggleTheme } from '~/features/theme'
 import { getTodaysDate } from '~/lib/date-fns'
-import { paths } from '~/pages/paths'
 import {
   AppBar,
   Avatar,
@@ -144,7 +143,7 @@ const AppHeader = () => {
             <li>
               <Item
                 exact
-                to={paths.home}
+                to="/"
                 activeStyle={activeStyle}
                 onClick={toggleDrawer(false)}
               >
@@ -154,7 +153,7 @@ const AppHeader = () => {
             <li>
               <Item
                 exact
-                to={paths.add}
+                to="/add"
                 activeStyle={activeStyle}
                 onClick={toggleDrawer(false)}
               >

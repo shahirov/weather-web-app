@@ -1,10 +1,10 @@
 import React from 'react'
 
-import Clouds from '~/assets/icons/clouds.svg'
-import Fog from '~/assets/icons/fog.svg'
-import Rain from '~/assets/icons/rain.svg'
-import Storm from '~/assets/icons/storm.svg'
-import Sun from '~/assets/icons/sun.svg'
+import Clouds from '~/assets/images/clouds.svg'
+import Fog from '~/assets/images/fog.svg'
+import Rain from '~/assets/images/rain.svg'
+import Storm from '~/assets/images/storm.svg'
+import Sun from '~/assets/images/sun.svg'
 
 type Props = {
   condition: string

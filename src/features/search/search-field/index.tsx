@@ -1,22 +1,28 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable react/jsx-props-no-spreading */
-import { useCombobox } from 'downshift'
-import { useStore } from 'effector-react'
+import { useCombobox, UseComboboxStateChange } from 'downshift'
+import debounce from 'lodash.debounce'
 import React from 'react'
+import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 
-import Search from '~/assets/icons/search.svg'
-import {
-  $inputValue,
-  $selectedCity,
-  $suggestedCities,
-  handleInputValueChange,
-  onSelectedItemChange,
-} from '~/features/search/model'
+import { SuggestedCity } from '~/api/types'
+import Search from '~/assets/images/search.svg'
+import { useAppDispatch } from '~/core/store'
+import { getSuggestedCities, selectSuggestedItems } from '~/features/search'
+import { getSearchedCityWeather } from '~/features/weather'
 
 export const SearchField = () => {
-  const cities = useStore($suggestedCities)
-  const inputValue = useStore($inputValue)
-  const selectedCity = useStore($selectedCity)
+  const dispatch = useAppDispatch()
+  const cities = useSelector(selectSuggestedItems)
+
+  const debouncedHandleInputValueChange = React.useMemo(
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    () => debounce(handleInputValueChange, 300),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [],
+  )
 
   const {
     isOpen,
@@ -29,18 +35,28 @@ export const SearchField = () => {
     highlightedIndex,
     closeMenu,
   } = useCombobox({
-    inputValue,
-    onSelectedItemChange,
+    onSelectedItemChange: handleSelectedItemChange,
     items: cities,
-    selectedItem: selectedCity,
     itemToString: (item) => (item ? item.name : ''),
-    // eslint-disable-next-line @typescript-eslint/no-shadow
-    onInputValueChange: ({ inputValue }) => {
-      if (!inputValue) closeMenu()
-
-      handleInputValueChange(inputValue ?? '')
-    },
+    onInputValueChange: debouncedHandleInputValueChange,
   })
+
+  async function handleSelectedItemChange({
+    selectedItem: selectedCity,
+  }: UseComboboxStateChange<SuggestedCity>) {
+    if (selectedCity) {
+      await dispatch(getSearchedCityWeather({ cityName: selectedCity.name }))
+    }
+  }
+
+  function handleInputValueChange({
+    inputValue,
+  }: UseComboboxStateChange<SuggestedCity>) {
+    if (!inputValue) closeMenu()
+    if (inputValue) {
+      dispatch(getSuggestedCities({ cityNamePrefix: inputValue }))
+    }
+  }
 
   const cityList = cities.map((city, index) => (
     <MenuItem

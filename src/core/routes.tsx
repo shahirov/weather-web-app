@@ -2,16 +2,9 @@ import React from 'react'
 import { RouteConfig } from 'react-router-config'
 import { Redirect } from 'react-router-dom'
 
-import { AddPage } from '~/pages/add'
-import { DetailsPage } from '~/pages/details'
-import { HomePage } from '~/pages/home'
-import { LoginPage } from '~/pages/login'
-import { paths } from '~/pages/paths'
-import { SignupPage } from '~/pages/signup'
+import { AddPage, DetailsPage, HomePage, LoginPage, SignupPage } from '~/pages'
 
-export const filterRoutes = (isAuth: boolean) => (
-  route: RouteConfig,
-): boolean => {
+const filterRoutes = (isAuth: boolean) => (route: RouteConfig): boolean => {
   if (!route.forAuth) return true
 
   return route.forAuth === isAuth
@@ -20,61 +13,61 @@ export const filterRoutes = (isAuth: boolean) => (
 export const makeRoutes = (isAuth: boolean): RouteConfig[] =>
   [
     {
-      path: paths.home,
+      path: '/',
       exact: true,
       forAuth: true,
       component: HomePage,
     },
     {
-      path: paths.home,
+      path: '/',
       exact: true,
       forAuth: false,
-      component: () => <Redirect to={paths.login} />,
+      component: () => <Redirect to="/login" />,
     },
     {
-      path: paths.add,
+      path: '/add',
       exact: true,
       forAuth: true,
       component: AddPage,
     },
     {
-      path: paths.add,
+      path: '/add',
       exact: true,
       forAuth: false,
-      component: () => <Redirect to={paths.login} />,
+      component: () => <Redirect to="/login" />,
     },
     {
-      path: paths.details,
+      path: '/details/:cityName',
       exact: true,
       forAuth: true,
       component: DetailsPage,
     },
     {
-      path: paths.details,
+      path: '/details/:city',
       exact: true,
       forAuth: false,
-      component: () => <Redirect to={paths.login} />,
+      component: () => <Redirect to="/login" />,
     },
     {
-      path: paths.login,
+      path: '/login',
       exact: true,
       forAuth: true,
-      component: () => <Redirect to={paths.home} />,
+      component: () => <Redirect to="/" />,
     },
     {
-      path: paths.login,
+      path: '/login',
       exact: true,
       forAuth: false,
       component: LoginPage,
     },
     {
-      path: paths.signup,
+      path: '/signup',
       exact: true,
       forAuth: true,
-      component: () => <Redirect to={paths.home} />,
+      component: () => <Redirect to="/" />,
     },
     {
-      path: paths.signup,
+      path: '/signup',
       exact: true,
       forAuth: false,
       component: SignupPage,

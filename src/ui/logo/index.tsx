@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
-import LogoIcon from '~/logo.svg'
+import LogoIcon from '~/assets/images/logo.svg'
 import { Row } from '~/ui/row'
 
 export const Logo = () => (
