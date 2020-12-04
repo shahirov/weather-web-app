@@ -1,8 +1,8 @@
-import { useStore } from 'effector-react'
 import React from 'react'
+import { useSelector } from 'react-redux'
 import { ThemeProvider as SThemeProvider } from 'styled-components'
 
-import { $theme } from '~/features/theme/model'
+import { selectTheme } from '~/features/theme/slice'
 import { darkTheme, lightTheme } from '~/lib/theme'
 
 type Props = {
@@ -10,7 +10,7 @@ type Props = {
 }
 
 export const ThemeProvider = ({ children }: Props) => {
-  const theme = useStore($theme)
+  const theme = useSelector(selectTheme)
 
   return (
     <SThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>

@@ -1,6 +1,5 @@
 import './init'
 
-import { useStore } from 'effector-react'
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { renderRoutes, RouteConfig } from 'react-router-config'
@@ -9,7 +8,7 @@ import styled from 'styled-components'
 
 import HamburgerIcon from '~/assets/images/hamburger.svg'
 import { logout, selectIsUserAuthenticated, selectUser } from '~/features/auth'
-import { $theme, toggleTheme } from '~/features/theme'
+import { selectTheme, toggleTheme } from '~/features/theme'
 import { getTodaysDate } from '~/lib/date-fns'
 import {
   AppBar,
@@ -44,7 +43,7 @@ export const Root = () => {
 const AppHeader = () => {
   const dispatch = useDispatch()
   const user = useSelector(selectUser)
-  const theme = useStore($theme)
+  const theme = useSelector(selectTheme)
   const [opened, setOpened] = React.useState(false)
 
   const profileName = user ? user.email : ''
@@ -78,6 +77,10 @@ const AppHeader = () => {
     dispatch(logout())
   }
 
+  const handleTogglingTheme = () => {
+    dispatch(toggleTheme())
+  }
+
   return (
     <AppBar>
       <Grid
@@ -105,7 +108,7 @@ const AppHeader = () => {
               name="theme"
               aria-label="switch theme"
               checked={theme === 'dark'}
-              onChange={toggleTheme}
+              onChange={handleTogglingTheme}
             />
             <SwitchItem>Dark</SwitchItem>
           </Row>

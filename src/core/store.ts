@@ -5,8 +5,22 @@ import { rootReducer } from './root-reducer'
 
 export type AppDispatch = typeof store.dispatch
 
+const localStorageKey = 'theme'
+const persistedTheme = window.localStorage.getItem(localStorageKey)
+
 export const store = configureStore({
   reducer: rootReducer,
+  devTools: process.env.NODE_ENV !== 'production',
+  preloadedState: {
+    theme: {
+      type: persistedTheme ? JSON.parse(persistedTheme) : 'light',
+    },
+  },
+})
+
+store.subscribe(() => {
+  const { type } = store.getState().theme
+  window.localStorage.setItem(localStorageKey, JSON.stringify(type))
 })
 
 if (process.env.NODE_ENV === 'development' && module.hot) {

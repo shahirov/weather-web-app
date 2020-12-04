@@ -1,4 +1,3 @@
-import { useStore } from 'effector-react'
 import React from 'react'
 import { useSelector } from 'react-redux'
 import styled, { css } from 'styled-components'
@@ -11,7 +10,7 @@ import LightCity from '~/assets/images/city-illustration-light.svg'
 import { useAppDispatch } from '~/core/store'
 import { selectUser } from '~/features/auth'
 import { getUserCities } from '~/features/cities'
-import { $theme } from '~/features/theme'
+import { selectTheme } from '~/features/theme'
 import {
   getCitiesWeather,
   resetCitiesWeatherData,
@@ -29,7 +28,7 @@ export const HomePage = () => {
   const dispatch = useAppDispatch()
   const user = useSelector(selectUser)
   const citiesWeatherData = useSelector(selectCitiesWeatherData)
-  const theme = useStore($theme)
+  const theme = useSelector(selectTheme)
 
   React.useEffect(() => {
     dispatch(getUserCities(user)).then((action) => {

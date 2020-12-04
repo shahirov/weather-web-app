@@ -1,2 +1,1 @@
-export * from './model'
-export { ThemeProvider } from './theme-provider'
+export * from './slice'

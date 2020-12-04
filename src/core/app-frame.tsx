@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 
 import { selectIsAuthChecked, selectIsUserAuthenticated } from '~/features/auth'
-import { ThemeProvider } from '~/features/theme'
+import { ThemeProvider } from '~/features/theme/theme-provider'
 import { Spin } from '~/ui'
 
 import { GlobalStyle } from './global-style'
