@@ -124,6 +124,9 @@ const weatherSlice = createSlice({
     resetCitiesWeatherData: (state) => {
       state.citiesWeatherData = {}
     },
+    resetSearchedCityWeatherData: (state) => {
+      state.searchedCityWeatherData = null
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getCitiesWeather.fulfilled, (state, { payload }) => {
@@ -146,7 +149,10 @@ const weatherSlice = createSlice({
 
 export const weatherReducer = weatherSlice.reducer
 
-export const { resetCitiesWeatherData } = weatherSlice.actions
+export const {
+  resetCitiesWeatherData,
+  resetSearchedCityWeatherData,
+} = weatherSlice.actions
 
 export const selectCitiesWeatherData = (
   state: RootState,

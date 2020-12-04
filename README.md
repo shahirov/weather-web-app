@@ -12,8 +12,8 @@
 - [Webpack](https://github.com/webpack/webpack) for bundling
 - [React](https://github.com/facebook/react) & [React DOM](https://github.com/facebook/react) for views
 - [React Router](https://github.com/ReactTraining/react-router) handles in-app routing
-- [Effector](https://github.com/effector/effector) manages application state
-- [Effector React](https://github.com/effector/effector) to use effector-react bindings
+- [Redux](https://github.com/reduxjs/redux-toolkit) manages application state
+- [React Redux](https://github.com/reduxjs/react-redux) to use react-redux bindings
 - [Styled Components](https://github.com/styled-components) allows styling components in JS
 - [ESLint](https://github.com/eslint/eslint) for linting JS/TS
 - [Jest](https://github.com/facebook/jest) as test runner

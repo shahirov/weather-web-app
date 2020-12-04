@@ -1,7 +1,6 @@
-import axios, { AxiosError, AxiosResponse } from 'axios'
-import { createEffect } from 'effector'
+import axios, { AxiosResponse } from 'axios'
 
-import { database, firebase } from '~/lib/firebase'
+import { database } from '~/lib/firebase'
 
 import { CityModel, SortingType, SuggestedCity, UserProfile } from './types'
 
@@ -52,9 +51,11 @@ export const fetchCities = async (
 export const addCityToFirestore = async ({
   user,
   city,
+  id,
 }: {
   user: UserProfile | null
-  city: SuggestedCity | null
+  city: string
+  id: number
 }): Promise<void> => {
   if (!user || !city) return
 
@@ -62,71 +63,11 @@ export const addCityToFirestore = async ({
 
   await documentRef.set(
     {
-      [city.name]: {
-        id: city.id,
-        name: city.name,
+      [city]: {
+        name: city,
+        id,
       },
     },
-    { mergeFields: [city.name] },
+    { mergeFields: [city] },
   )
 }
-
-// Effector
-export const getSuggestedCitiesByNameFx = createEffect<
-  {
-    cityNamePrefix: string
-    sort?: SortingType
-    offset?: number
-    limit?: number
-  },
-  AxiosResponse<{ data: SuggestedCity[] }>,
-  AxiosError
->(({ cityNamePrefix, sort = 'name', offset = 0, limit = 10 }) =>
-  request.get('geo/cities', {
-    params: {
-      namePrefix: cityNamePrefix,
-      sort,
-      offset,
-      limit,
-    },
-  }),
-)
-
-export const getCitiesFx = createEffect<
-  { user: UserProfile | null },
-  Record<string, CityModel>,
-  firebase.firestore.FirestoreError
->(async ({ user }) => {
-  if (!user) return {}
-
-  const documentRef = citiesRef.doc(user.id)
-  const snapshot = await documentRef.get()
-  const data = snapshot.data()
-
-  if (!snapshot.exists || !data) {
-    return {}
-  }
-
-  return data
-})
-
-export const addCityFx = createEffect<
-  { user: UserProfile | null; city: SuggestedCity | null },
-  void,
-  firebase.firestore.FirestoreError
->(async ({ user, city }) => {
-  if (!user || !city) return
-
-  const documentRef = citiesRef.doc(user.id)
-
-  await documentRef.set(
-    {
-      [city.name]: {
-        id: city.id,
-        name: city.name,
-        createdAt: new Date(),
-      },
-    },
-    { mergeFields: [city.name] },
-  )
-})

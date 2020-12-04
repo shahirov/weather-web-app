@@ -4,7 +4,6 @@ import styled, { css } from 'styled-components'
 
 import MaxArrow from '~/assets/images/max-arrow.svg'
 import MinArrow from '~/assets/images/min-arrow.svg'
-import { addCity } from '~/features/weather/model'
 import { Button, Row, WeatherIcon } from '~/ui'
 
 type Props = {
@@ -14,6 +13,7 @@ type Props = {
   minTemperature: number
   maxTemperature: number
   showActionButton?: boolean
+  onActionButtonClick?: (event: React.MouseEvent) => void
 }
 
 export const WeatherCard = ({
@@ -23,6 +23,7 @@ export const WeatherCard = ({
   minTemperature,
   condition,
   showActionButton = false,
+  onActionButtonClick,
 }: Props) => {
   const history = useHistory()
 
@@ -70,7 +71,7 @@ export const WeatherCard = ({
         </Row>
       </Row>
       {showActionButton && (
-        <ActionButton type="button" onClick={addCity} inverse>
+        <ActionButton type="button" onClick={onActionButtonClick} inverse>
           Add City
         </ActionButton>
       )}

@@ -1,8 +1,8 @@
-import { useStore } from 'effector-react'
 import React from 'react'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 
+import { addCityToFirestore } from '~/api/cities'
 import CheckMark from '~/assets/images/check.svg'
 import favCityUrl from '~/assets/images/fav-city.jpg'
 import { useAppDispatch } from '~/core/store'
@@ -15,14 +15,13 @@ import {
 import { SearchField } from '~/features/search/search-field'
 import {
   getFavoriteCityWeather,
+  resetSearchedCityWeatherData,
   selectFavoriteCityWeatherData,
   selectSearchedCityWeatherData,
   WeatherCard,
 } from '~/features/weather'
 import { getTodaysDate } from '~/lib/date-fns'
 import { Cell, Grid, Row, WeatherIcon } from '~/ui'
-
-import { $cityAdded } from './model'
 
 export const AddPage = () => {
   const dispatch = useAppDispatch()
@@ -31,18 +30,7 @@ export const AddPage = () => {
   const favoriteCityWeatherData = useSelector(selectFavoriteCityWeatherData)
   const favoriteCityFollowed = useSelector(selectIsFavotiteCityFollowed)
   const searchedCityWeatherData = useSelector(selectSearchedCityWeatherData)
-
-  React.useEffect(() => {
-    if (cities.length === 0) {
-      dispatch(getUserCities(user))
-    }
-  }, [user, dispatch, cities])
-
-  React.useEffect(() => {
-    dispatch(getFavoriteCityWeather())
-  }, [dispatch])
-
-  const cityAdded = useStore($cityAdded)
+  const [cityAdded, setCityAdded] = React.useState(false)
 
   const temperature = favoriteCityWeatherData
     ? Math.ceil(favoriteCityWeatherData.main.temp)
@@ -50,6 +38,54 @@ export const AddPage = () => {
   const condition = favoriteCityWeatherData
     ? favoriteCityWeatherData.weather[0].main
     : ''
+
+  React.useEffect(() => {
+    if (cities.length === 0) {
+      dispatch(getUserCities(user))
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, dispatch])
+
+  React.useEffect(() => {
+    dispatch(getFavoriteCityWeather())
+  }, [dispatch])
+
+  React.useEffect(() => {
+    let timeoutId: number
+
+    if (cityAdded) {
+      timeoutId = setTimeout(() => {
+        setCityAdded(false)
+        dispatch(resetSearchedCityWeatherData())
+      }, 2500)
+    }
+
+    return () => {
+      clearTimeout(timeoutId)
+    }
+  }, [cityAdded, dispatch])
+
+  const addCity = async () => {
+    if (searchedCityWeatherData) {
+      await addCityToFirestore({
+        user,
+        id: searchedCityWeatherData.id,
+        city: searchedCityWeatherData.name,
+      })
+      setCityAdded(true)
+    }
+  }
+
+  const addFavoriteCity = async () => {
+    if (favoriteCityWeatherData) {
+      await addCityToFirestore({
+        user,
+        id: favoriteCityWeatherData.id,
+        city: favoriteCityWeatherData.name,
+      })
+      dispatch(getUserCities(user))
+    }
+  }
 
   return (
     <Grid
@@ -74,6 +110,7 @@ export const AddPage = () => {
               minTemperature={Math.ceil(searchedCityWeatherData.main.temp_min)}
               condition={searchedCityWeatherData.weather[0].main}
               showActionButton
+              onActionButtonClick={addCity}
             />
           )}
           {cityAdded && <SuccessMessage />}
@@ -105,7 +142,7 @@ export const AddPage = () => {
               Followed
             </FollowedButton>
           ) : (
-            <FollowButton type="button" disabled>
+            <FollowButton type="button" onClick={addFavoriteCity}>
               Follow
             </FollowButton>
           )}
