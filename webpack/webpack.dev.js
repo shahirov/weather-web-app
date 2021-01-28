@@ -1,17 +1,13 @@
-const webpack = require('webpack')
-const { merge } = require('webpack-merge')
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
-const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin')
-const ErrorOverlayPlugin = require('error-overlay-webpack-plugin')
-const CircularDependencyPlugin = require('circular-dependency-plugin')
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin')
 const postcssNormalize = require('postcss-normalize')
-const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
+const webpack = require('webpack')
+const { merge } = require('webpack-merge')
 
 const paths = require('./paths')
-const common = require('./webpack.common')
+const baseConfig = require('./webpack.base')
 
-module.exports = merge(common, {
+module.exports = merge(baseConfig, {
   mode: 'development',
   devtool: 'cheap-module-source-map',
   output: {
@@ -20,24 +16,28 @@ module.exports = merge(common, {
     chunkFilename: 'js/[name].chunk.js',
   },
   devServer: {
-    compress: true,
-    clientLogLevel: 'none',
     contentBase: paths.appPublic,
-    contentBasePublicPath: paths.publicUrlOrPath,
-    watchContentBase: true,
+    publicPath: paths.publicUrlOrPath,
     hot: true,
-    publicPath: paths.publicUrlOrPath.slice(0, -1),
-    quiet: true,
-    host: 'localhost',
+    watchContentBase: true,
+    compress: true,
     open: true,
-    historyApiFallback: {
-      disableDotRule: true,
-      index: paths.publicUrlOrPath,
-    },
-    port: 3000,
+    port: 8000,
+    transportMode: 'ws',
+    historyApiFallback: true,
   },
   module: {
     rules: [
+      {
+        test: /\.(js|jsx|ts|tsx)$/,
+        include: paths.appSrc,
+        loader: require.resolve('babel-loader'),
+        options: {
+          cacheDirectory: true,
+          cacheCompression: false,
+          compact: false,
+        },
+      },
       {
         test: /\.css$/,
         exclude: /\.module\.css$/,
@@ -53,20 +53,20 @@ module.exports = merge(common, {
           {
             loader: require.resolve('postcss-loader'),
             options: {
-              ident: 'postcss',
-              postcssOptions: [],
-              plugins: [
-                [
-                  require.resolve('postcss-preset-env'),
-                  {
-                    autoprefixer: {
-                      flexbox: 'no-2009',
+              postcssOptions: {
+                plugins: [
+                  [
+                    require.resolve('postcss-preset-env'),
+                    {
+                      autoprefixer: {
+                        flexbox: 'no-2009',
+                      },
+                      stage: 3,
                     },
-                    stage: 3,
-                  },
+                  ],
+                  postcssNormalize(),
                 ],
-                postcssNormalize(),
-              ],
+              },
               sourceMap: true,
             },
           },
@@ -87,20 +87,20 @@ module.exports = merge(common, {
           {
             loader: require.resolve('postcss-loader'),
             options: {
-              ident: 'postcss',
-              postcssOptions: [],
-              plugins: [
-                [
-                  require.resolve('postcss-preset-env'),
-                  {
-                    autoprefixer: {
-                      flexbox: 'no-2009',
+              postcssOptions: {
+                plugins: [
+                  [
+                    require.resolve('postcss-preset-env'),
+                    {
+                      autoprefixer: {
+                        flexbox: 'no-2009',
+                      },
+                      stage: 3,
                     },
-                    stage: 3,
-                  },
+                  ],
+                  postcssNormalize(),
                 ],
-                postcssNormalize(),
-              ],
+              },
               sourceMap: true,
             },
           },
@@ -109,18 +109,8 @@ module.exports = merge(common, {
     ],
   },
   plugins: [
+    new webpack.HotModuleReplacementPlugin(),
     new ReactRefreshWebpackPlugin(),
-    new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: JSON.stringify('development'),
-      },
-    }),
     new CaseSensitivePathsPlugin(),
-    new CircularDependencyPlugin({
-      exclude: /a\.js|node_modules/,
-    }),
-    new ErrorOverlayPlugin(),
-    new FriendlyErrorsWebpackPlugin(),
-    new ForkTsCheckerWebpackPlugin(),
   ],
 })

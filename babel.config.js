@@ -4,8 +4,6 @@ const isDevelopment =
   process.env.NODE_ENV === 'development'
 
 const presetReact = {
-  development: isDevelopment,
-  useBuiltIns: true,
   runtime: 'automatic',
 }
 
@@ -18,7 +16,6 @@ const presetEnv = {
 const presetTypescript = {
   isTSX: true,
   allExtensions: true,
-  onlyRemoveTypeImports: true,
 }
 
 const pluginStyledComponents = {

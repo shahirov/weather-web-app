@@ -1,10 +1,7 @@
 module.exports = {
   roots: ['<rootDir>/src'],
   collectCoverageFrom: ['src/**/*.{js,jsx,ts,tsx}', '!src/**/*.d.ts'],
-  setupFilesAfterEnv: [
-    '@testing-library/jest-dom/extend-expect',
-    // '<rootDir/src/setup-tests.ts>',
-  ],
+  setupFilesAfterEnv: [],
   testMatch: [
     '<rootDir>/src/**/__tests__/**/*.{js,jsx,ts,tsx}',
     '<rootDir>/src/**/*.{spec,test}.{js,jsx,ts,tsx}',
@@ -12,8 +9,7 @@ module.exports = {
   testEnvironment: 'jsdom',
   testRunner: 'jest-circus/runner',
   transform: {
-    '^.+\\.(js|jsx|mjs|cjs|ts|tsx)$': '<rootDir>/node_modules/babel-jest',
-    '^.+\\.(js|jsx|ts|tsx)$': '<rootDir>/node_modules/babel-jest',
+    '^.+\\.(ts|tsx|js|jsx)$': '<rootDir>/node_modules/babel-jest',
     '^.+\\.css$': '<rootDir>/webpack/jest/css-transform.js',
   },
   transformIgnorePatterns: [

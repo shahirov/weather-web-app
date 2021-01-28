@@ -1,14 +1,14 @@
-#Webpack
-webpack
-
-#Jest
-jest.config.js
-
-#Babel
-babel.config.js
-
 # TS
 .typescript
+
+# Babel
+babel.config.js
+
+# Jest
+jest.config.js
+
+# Webpack
+webpack
 
 # Dependencies
 node_modules

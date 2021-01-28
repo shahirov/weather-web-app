@@ -1,78 +1,77 @@
-const webpack = require('webpack')
-const { merge } = require('webpack-merge')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
-const TerserPlugin = require('terser-webpack-plugin')
-const safePostCssParser = require('postcss-safe-parser')
 const postcssNormalize = require('postcss-normalize')
-const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
+const { merge } = require('webpack-merge')
 
 const paths = require('./paths')
-const common = require('./webpack.common')
+const baseConfig = require('./webpack.base')
 
-module.exports = merge(common, {
+const testModules = (names) => (chunk) =>
+  Boolean(chunk.resource) &&
+  names.some((name) =>
+    chunk.resource.startsWith(`${paths.root}/node_modules/${name}/`),
+  )
+
+module.exports = merge(baseConfig, {
   mode: 'production',
   bail: true,
   devtool: false,
   output: {
+    path: paths.appBuild,
     filename: 'js/[name].[contenthash:8].js',
     chunkFilename: 'js/[name].[contenthash:8].chunk.js',
   },
   optimization: {
     minimize: true,
-    minimizer: [
-      new TerserPlugin({
-        terserOptions: {
-          parse: {
-            ecma: 8,
-          },
-          compress: {
-            ecma: 5,
-            warnings: false,
-            comparisons: false,
-            inline: 2,
-          },
-          mangle: {
-            safari10: true,
-          },
-          output: {
-            ecma: 5,
-            comments: false,
-            ascii_only: true,
-          },
-        },
-      }),
-      new OptimizeCSSAssetsPlugin({
-        cssProcessorOptions: {
-          parser: safePostCssParser,
-          map: false,
-        },
-        cssProcessorPluginOptions: {
-          preset: ['default', { minifyFontValues: { removeQuotes: false } }],
-        },
-      }),
-    ],
+    minimizer: ['...', new CssMinimizerPlugin()],
     splitChunks: {
       chunks: 'all',
+      minSize: 0,
+      maxAsyncRequests: 16,
+      maxInitialRequests: 6,
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendors',
+          chunks: 'all',
+        },
+        polyfills: {
+          test: testModules(['core-js']),
+          enforce: true,
+          reuseExistingChunk: true,
+        },
+        react: {
+          test: testModules(['react', 'react-dom', 'scheduler']),
+          name: 'react',
+          enforce: true,
+          reuseExistingChunk: true,
+        },
+      },
     },
-    runtimeChunk: {
-      name: (entrypoint) => `runtime-${entrypoint.name}`,
-    },
+    runtimeChunk: 'single',
+    emitOnErrors: false,
+    moduleIds: 'named',
+    chunkIds: 'named',
   },
   module: {
     rules: [
+      {
+        test: /\.(js|jsx|ts|tsx)$/,
+        include: paths.appSrc,
+        loader: require.resolve('babel-loader'),
+        options: {
+          cacheDirectory: true,
+          cacheCompression: false,
+          compact: true,
+        },
+      },
       {
         test: /\.css$/,
         exclude: /\.module\.css$/,
         use: [
           require.resolve('style-loader'),
-          {
-            loader: MiniCssExtractPlugin.loader,
-            options: paths.publicUrlOrPath.startsWith('.')
-              ? { publicPath: '../' }
-              : {},
-          },
+          MiniCssExtractPlugin.loader,
           {
             loader: require.resolve('css-loader'),
             options: {
@@ -83,20 +82,20 @@ module.exports = merge(common, {
           {
             loader: require.resolve('postcss-loader'),
             options: {
-              ident: 'postcss',
-              postcssOptions: [],
-              plugins: [
-                [
-                  require.resolve('postcss-preset-env'),
-                  {
-                    autoprefixer: {
-                      flexbox: 'no-2009',
+              postcssOptions: {
+                plugins: [
+                  [
+                    require.resolve('postcss-preset-env'),
+                    {
+                      autoprefixer: {
+                        flexbox: 'no-2009',
+                      },
+                      stage: 3,
                     },
-                    stage: 3,
-                  },
+                  ],
+                  postcssNormalize(),
                 ],
-                postcssNormalize(),
-              ],
+              },
               sourceMap: false,
             },
           },
@@ -117,20 +116,20 @@ module.exports = merge(common, {
           {
             loader: require.resolve('postcss-loader'),
             options: {
-              ident: 'postcss',
-              postcssOptions: [],
-              plugins: [
-                [
-                  require.resolve('postcss-preset-env'),
-                  {
-                    autoprefixer: {
-                      flexbox: 'no-2009',
+              postcssOptions: {
+                plugins: [
+                  [
+                    require.resolve('postcss-preset-env'),
+                    {
+                      autoprefixer: {
+                        flexbox: 'no-2009',
+                      },
+                      stage: 3,
                     },
-                    stage: 3,
-                  },
+                  ],
+                  postcssNormalize(),
                 ],
-                postcssNormalize(),
-              ],
+              },
               sourceMap: false,
             },
           },
@@ -143,17 +142,6 @@ module.exports = merge(common, {
     new MiniCssExtractPlugin({
       filename: 'css/[name].[contenthash:8].css',
       chunkFilename: 'css/[name].[contenthash:8].chunk.css',
-    }),
-    new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: JSON.stringify('production'),
-      },
-    }),
-    new ForkTsCheckerWebpackPlugin({
-      async: false,
-      typescript: {
-        memoryLimit: 4096,
-      },
     }),
   ],
 })

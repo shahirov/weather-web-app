@@ -1,8 +1,8 @@
 # 🚀 Weather Web App
 
-[![Dependency Status](https://david-dm.org/shahirov/starter-kit.svg)](https://david-dm.org/shahirov/starter-kit)
-[![devDependency Status](https://david-dm.org/shahirov/starter-kit/dev-status.svg)](https://david-dm.org/shahirov/starter-kit?type=dev)
-[![Known Vulnerabilities](https://snyk.io/test/github/shahirov/starter-kit/badge.svg)](https://snyk.io/test/github/shahirov/starter-kit)
+[![Dependency Status](https://david-dm.org/shahirov/weather-web-app.svg)](https://david-dm.org/shahirov/weather-web-app)
+[![devDependency Status](https://david-dm.org/shahirov/weather-web-app/dev-status.svg)](https://david-dm.org/shahirov/weather-web-app?type=dev)
+[![Known Vulnerabilities](https://snyk.io/test/github/shahirov/weather-web-app/badge.svg)](https://snyk.io/test/github/shahirov/weather-web-app)
 
 ## Technology stack
 
