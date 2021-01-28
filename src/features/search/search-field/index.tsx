@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable react/jsx-props-no-spreading */
 import { useCombobox, UseComboboxStateChange } from 'downshift'
 import debounce from 'lodash.debounce'
 import React from 'react'

@@ -12,14 +12,22 @@ type Props = {
 
 export const WeatherIcon = ({ condition }: Props) => {
   const renderIcon = (param: string) => {
-    switch (param) {
-      case 'Clouds':
+    switch (param.toLowerCase()) {
+      case 'clouds':
         return <Clouds />
-      case 'Rain' || 'Drizzle' || 'Mist':
+      case 'rain':
         return <Rain />
-      case 'Haze' || 'Fog':
+      case 'drizzle':
+        return <Rain />
+      case 'mist':
+        return <Rain />
+      case 'haze':
         return <Fog />
-      case 'Storm' || 'Thunderstorm':
+      case 'fog':
+        return <Fog />
+      case 'storm':
+        return <Storm />
+      case 'thunderstorm':
         return <Storm />
       default:
         return <Sun />

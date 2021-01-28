@@ -102,6 +102,11 @@ const WeatherIconContainer = styled.div`
   width: 10rem;
   margin-top: 2rem;
   margin-bottom: 1rem;
+
+  & > svg {
+    width: 10rem;
+    height: 10rem;
+  }
 `
 
 const TemperatureMetric = styled.span`

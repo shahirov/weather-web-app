@@ -257,6 +257,11 @@ const DayWeatherContainer = styled.div`
 const WeatherIconContainer = styled.div`
   width: 4rem;
   height: 4rem;
+
+  & > svg {
+    width: 4rem;
+    height: 4rem;
+  }
 `
 
 const DayWeatherText = styled.span`

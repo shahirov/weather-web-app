@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import React, { ComponentPropsWithRef } from 'react'
 import styled from 'styled-components'
 

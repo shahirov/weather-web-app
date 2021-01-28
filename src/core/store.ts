@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { configureStore } from '@reduxjs/toolkit'
 import { useDispatch } from 'react-redux'
 
@@ -25,7 +27,7 @@ store.subscribe(() => {
 
 if (process.env.NODE_ENV === 'development' && module.hot) {
   module.hot.accept('./root-reducer', () => {
-    // eslint-disable-next-line global-require
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
     const newRootReducer = require('./root-reducer').default
     store.replaceReducer(newRootReducer)
   })

@@ -38,7 +38,7 @@ export const checkAuthState = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const firebaseUser = await checkAuth()
-      return await getUserProfile(firebaseUser)
+      return getUserProfile(firebaseUser)
     } catch (error_) {
       const error = error_ as firebase.auth.AuthError
       return rejectWithValue({ code: error.code, message: error.message })

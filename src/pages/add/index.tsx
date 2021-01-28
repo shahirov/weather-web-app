@@ -32,10 +32,10 @@ export const AddPage = () => {
   const searchedCityWeatherData = useSelector(selectSearchedCityWeatherData)
   const [cityAdded, setCityAdded] = React.useState(false)
 
-  const temperature = favoriteCityWeatherData
+  const favCityTemperature = favoriteCityWeatherData
     ? Math.ceil(favoriteCityWeatherData.main.temp)
     : ''
-  const condition = favoriteCityWeatherData
+  const favCityCondition = favoriteCityWeatherData
     ? favoriteCityWeatherData.weather[0].main
     : ''
 
@@ -51,7 +51,7 @@ export const AddPage = () => {
   }, [dispatch])
 
   React.useEffect(() => {
-    let timeoutId: number
+    let timeoutId: NodeJS.Timeout
 
     if (cityAdded) {
       timeoutId = setTimeout(() => {
@@ -126,16 +126,16 @@ export const AddPage = () => {
         </Row>
         <Row as={FavoriteCityBody} direction="column" align="center">
           <FavoriteCityWeatherIconContainer>
-            <WeatherIcon
-              condition={favoriteCityWeatherData?.weather[0].main || 'Sun'}
-            />
+            <WeatherIcon condition={favCityCondition} />
           </FavoriteCityWeatherIconContainer>
           <Row as={FavoriteCityWeatherInfo} direction="column" align="center">
-            <FavoriteCityTemperature>{temperature}°</FavoriteCityTemperature>
+            <FavoriteCityTemperature>
+              {favCityTemperature}°
+            </FavoriteCityTemperature>
             <FavoriteCityName>
               Moscow <sub>RU</sub>
             </FavoriteCityName>
-            <FavoriteCityCondition>{condition}</FavoriteCityCondition>
+            <FavoriteCityCondition>{favCityCondition}</FavoriteCityCondition>
           </Row>
           {favoriteCityFollowed ? (
             <FollowedButton type="button" disabled>
