@@ -3,13 +3,11 @@ import styled from 'styled-components'
 
 type Props = ComponentProps<'img'>
 
-export const Avatar = ({ src, alt, width, height }: Props) => {
-  return (
-    <Wrapper width={width} height={height}>
-      <Image src={src} alt={alt} />
-    </Wrapper>
-  )
-}
+export const Avatar = ({ src, alt, width, height }: Props) => (
+  <Wrapper width={width} height={height}>
+    <Image src={src} alt={alt} />
+  </Wrapper>
+)
 
 const Wrapper = styled.div<Pick<Props, 'width' | 'height'>>`
   width: ${({ width }) => width};

@@ -1,3 +1,5 @@
+/* eslint-disable global-require */
+/* eslint-disable unicorn/prefer-module */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { configureStore } from '@reduxjs/toolkit'
@@ -33,4 +35,5 @@ if (process.env.NODE_ENV === 'development' && module.hot) {
   })
 }
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const useAppDispatch = () => useDispatch<AppDispatch>()

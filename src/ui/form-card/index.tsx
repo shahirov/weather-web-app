@@ -1,4 +1,3 @@
-import React from 'react'
 import styled from 'styled-components'
 
 import { Row } from '~/ui/row'
@@ -9,23 +8,21 @@ type Props = {
   children: React.ReactNode
 }
 
-export const FormCard = ({ children, title, text }: Props) => {
-  return (
-    <Paper align="center" justify="center">
-      <Card>
-        <Content direction="column" justify="start" align="center">
-          <Header>{title}</Header>
-          {children}
-        </Content>
-        <Aside as="aside" direction="column" justify="end">
-          <Overlay />
-          <Text>{text}</Text>
-          <Hr />
-        </Aside>
-      </Card>
-    </Paper>
-  )
-}
+export const FormCard = ({ children, title, text }: Props) => (
+  <Paper align="center" justify="center">
+    <Card>
+      <Content direction="column" justify="start" align="center">
+        <Header>{title}</Header>
+        {children}
+      </Content>
+      <Aside as="aside" direction="column" justify="end">
+        <Overlay />
+        <Text>{text}</Text>
+        <Hr />
+      </Aside>
+    </Card>
+  </Paper>
+)
 
 const Paper = styled(Row)`
   width: 100%;

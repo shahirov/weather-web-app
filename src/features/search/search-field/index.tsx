@@ -48,12 +48,12 @@ export const SearchField = () => {
     }
   }
 
-  function handleInputValueChange({
+  async function handleInputValueChange({
     inputValue,
   }: UseComboboxStateChange<SuggestedCity>) {
     if (!inputValue) closeMenu()
     if (inputValue) {
-      dispatch(getSuggestedCities({ cityNamePrefix: inputValue }))
+      await dispatch(getSuggestedCities({ cityNamePrefix: inputValue }))
     }
   }
 

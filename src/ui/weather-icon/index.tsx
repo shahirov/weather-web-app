@@ -1,5 +1,3 @@
-import React from 'react'
-
 import Clouds from '~/assets/images/clouds.svg'
 import Fog from '~/assets/images/fog.svg'
 import Rain from '~/assets/images/rain.svg'

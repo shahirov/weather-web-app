@@ -1,4 +1,3 @@
-import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -8,14 +7,12 @@ type Props = {
   textLink: string
 }
 
-export const FormNotice = ({ text, link, textLink }: Props) => {
-  return (
-    <Notice>
-      <Text>{text}</Text>
-      <StyledLink to={link}>{textLink}</StyledLink>
-    </Notice>
-  )
-}
+export const FormNotice = ({ text, link, textLink }: Props) => (
+  <Notice>
+    <Text>{text}</Text>
+    <StyledLink to={link}>{textLink}</StyledLink>
+  </Notice>
+)
 
 const Notice = styled.div`
   margin-top: 3rem;

@@ -37,9 +37,9 @@ export const getCitiesWeather = createAsyncThunk<
     cities: CityModel[]
     units?: UnitMeasurement
   }
->('weather/getCitiesWeather', async ({ cities, units }) => {
-  return fetchCitiesWeatherData({ cities, units })
-})
+>('weather/getCitiesWeather', async ({ cities, units }) =>
+  fetchCitiesWeatherData({ cities, units }),
+)
 
 export const getWeatherForCity = createAsyncThunk<
   CityWeatherData,
@@ -47,9 +47,9 @@ export const getWeatherForCity = createAsyncThunk<
     cityName: string
     units?: UnitMeasurement
   }
->('weather/getWeatherForCity', async ({ cityName }) => {
-  return fetchWeatherDataForCity({ cityName })
-})
+>('weather/getWeatherForCity', async ({ cityName }) =>
+  fetchWeatherDataForCity({ cityName }),
+)
 
 export const getForecastByCity = createAsyncThunk<
   DaysForecast,
@@ -76,11 +76,11 @@ export const getForecastByCity = createAsyncThunk<
     }
   }
 
-  Object.keys(daysForecast).forEach((day) => {
+  for (const day of Object.keys(daysForecast)) {
     daysForecast[day].temperature = Math.ceil(
       daysForecast[day].temperature / daysForecast[day].counter,
     )
-  })
+  }
   delete daysForecast[Object.keys(daysForecast)[0]]
 
   return daysForecast
@@ -149,10 +149,8 @@ const weatherSlice = createSlice({
 
 export const weatherReducer = weatherSlice.reducer
 
-export const {
-  resetCitiesWeatherData,
-  resetSearchedCityWeatherData,
-} = weatherSlice.actions
+export const { resetCitiesWeatherData, resetSearchedCityWeatherData } =
+  weatherSlice.actions
 
 export const selectCitiesWeatherData = (
   state: RootState,

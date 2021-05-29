@@ -2,7 +2,8 @@ import { ErrorOption } from 'react-hook-form'
 
 export const addAuthError = <
   E extends { code: string; message: string },
-  FielValues extends Record<string, any>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  FielValues extends Record<string, any>,
 >(
   error: E,
   setError: (name: keyof FielValues, error: ErrorOption) => void,

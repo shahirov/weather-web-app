@@ -1,23 +1,20 @@
-import React from 'react'
 import styled from 'styled-components'
 
 type Props = {
   tip: string
 }
 
-export const Spin = ({ tip }: Props) => {
-  return (
-    <>
-      <SpinDot>
-        <SpinDotItem />
-        <SpinDotItem />
-        <SpinDotItem />
-        <SpinDotItem />
-      </SpinDot>
-      <SpinDotText>{tip}</SpinDotText>
-    </>
-  )
-}
+export const Spin = ({ tip }: Props) => (
+  <>
+    <SpinDot>
+      <SpinDotItem />
+      <SpinDotItem />
+      <SpinDotItem />
+      <SpinDotItem />
+    </SpinDot>
+    <SpinDotText>{tip}</SpinDotText>
+  </>
+)
 
 const SpinDot = styled.span`
   position: absolute;

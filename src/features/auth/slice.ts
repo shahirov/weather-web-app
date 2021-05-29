@@ -28,17 +28,19 @@ type AuthState = {
   error: AuthError | null
 }
 
-const isOneOf = <ActionCreator extends TypedActionCreator<string>>(
-  actions: ActionCreator[],
-) => (action: AnyAction): action is ReturnType<ActionCreator> =>
-  actions.map(({ type }) => type).includes(action.type)
+const isOneOf =
+  <ActionCreator extends TypedActionCreator<string>>(
+    actions: ActionCreator[],
+  ) =>
+  (action: AnyAction): action is ReturnType<ActionCreator> =>
+    actions.map(({ type }) => type).includes(action.type)
 
 export const checkAuthState = createAsyncThunk(
   'auth/checkAuth',
   async (_, { rejectWithValue }) => {
     try {
       const firebaseUser = await checkAuth()
-      return getUserProfile(firebaseUser)
+      return await getUserProfile(firebaseUser)
     } catch (error_) {
       const error = error_ as firebase.auth.AuthError
       return rejectWithValue({ code: error.code, message: error.message })

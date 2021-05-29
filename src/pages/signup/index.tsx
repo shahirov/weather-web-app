@@ -1,4 +1,4 @@
-import React from 'react'
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
 
@@ -24,6 +24,7 @@ export const SignupPage = () => {
 
   const onSubmit = async ({ email, password }: FormValues) => {
     const action = await dispatch(signUpWithEmail({ email, password }))
+    // eslint-disable-next-line unicorn/prefer-regexp-test
     if (signUpWithEmail.rejected.match(action)) {
       addAuthError(action.payload as AuthError, setError)
     }

@@ -1,4 +1,5 @@
-import React from 'react'
+/* eslint-disable unicorn/prefer-regexp-test */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
 

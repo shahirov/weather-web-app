@@ -10,7 +10,8 @@
   "settings": {
     "import/resolver": {
       "typescript": {
-        "alwaysTryTypes": true
+        "alwaysTryTypes": true,
+        "project": "./tsconfig.json"
       },
       "node": {
         "paths": ["src"]
@@ -19,7 +20,7 @@
   },
   "extends": [
     "plugin:unicorn/recommended",
-    "plugin:testing-library/recommended",
+    "plugin:testing-library/react",
     "plugin:jest/recommended",
     "plugin:import/typescript",
     "plugin:@typescript-eslint/recommended-requiring-type-checking",
@@ -27,10 +28,7 @@
     "airbnb",
     "airbnb/hooks",
     "airbnb-typescript",
-    "prettier",
-    "prettier/react",
-    "prettier/@typescript-eslint",
-    "prettier/unicorn"
+    "prettier"
   ],
   "env": {
     "es2020": true,
@@ -70,8 +68,7 @@
     {
       "files": ["src/**/*.tsx"],
       "rules": {
-        "@typescript-eslint/explicit-module-boundary-types": "off",
-        "@typescript-eslint/no-use-before-define": "off"
+        "@typescript-eslint/explicit-module-boundary-types": "off"
       }
     },
     {
@@ -83,6 +80,7 @@
   ],
   "rules": {
     "react/jsx-uses-react": "off",
+    "react/jsx-props-no-spreading": "off",
     "react/react-in-jsx-scope": "off",
     "react/jsx-filename-extension": [
       "error",
@@ -101,14 +99,7 @@
     "import/no-extraneous-dependencies": [
       "error",
       {
-        "devDependencies": [
-          "./*.js",
-          "webpack/**/*.ts",
-          "src/setup-tests.ts",
-          "src/**/*.test.js",
-          "src/**/*.test.ts",
-          "src/**/*.test.tsx"
-        ]
+        "devDependencies": true
       }
     ],
     "import/prefer-default-export": "off",
@@ -121,37 +112,8 @@
       "SequenceExpression"
     ],
     "no-restricted-imports": ["error", { "patterns": ["../*", "~/@/*"] }],
-    "unicorn/prevent-abbreviations": [
-      "error",
-      {
-        "whitelist": {
-          "args": true,
-          "ref": true,
-          "Ref": true,
-          "prop": true,
-          "Prop": true,
-          "props": true,
-          "Props": true,
-          "dev": true,
-          "Dev": true,
-          "prod": true,
-          "Prod": true,
-          "env": true,
-          "Env": true,
-          "params": true,
-          "Params": true,
-          "param": true,
-          "Param": true,
-          "config": true,
-          "Config": true,
-          "resolveFn": true,
-          "fn": true,
-          "Fn": true,
-          "obj": true,
-          "acc": true
-        }
-      }
-    ],
+    "no-param-reassign": "off",
+    "unicorn/prevent-abbreviations": "off",
     "unicorn/no-null": "off",
     "unicorn/no-fn-reference-in-iterator": "off",
     "react/require-default-props": [
@@ -165,9 +127,7 @@
     "@typescript-eslint/no-shadow": "off",
     "@typescript-eslint/no-floating-promises": "off",
     "@typescript-eslint/unbound-method": "off",
-    "arrow-body-style": "off",
-    "no-param-reassign": "off",
-    "global-require": "off",
-    "react/jsx-props-no-spreading": "off"
+    "@typescript-eslint/no-unused-vars": "warn",
+    "@typescript-eslint/no-use-before-define": "off"
   }
 }

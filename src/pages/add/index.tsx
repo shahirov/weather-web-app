@@ -152,14 +152,12 @@ export const AddPage = () => {
   )
 }
 
-const SuccessMessage = () => {
-  return (
-    <Note>
-      <CheckMark />
-      <Message>City has been successfully added!</Message>
-    </Note>
-  )
-}
+const SuccessMessage = () => (
+  <Note>
+    <CheckMark />
+    <Message>City has been successfully added!</Message>
+  </Note>
+)
 
 const Paper = styled.section`
   margin-top: 1rem;
@@ -250,7 +248,7 @@ const FavoriteCityBody = styled.div`
 `
 
 const FavoriteCityWeatherIconContainer = styled.div`
-  width: 9rem;
+  width: 6rem;
 `
 
 const FavoriteCityWeatherInfo = styled.div``

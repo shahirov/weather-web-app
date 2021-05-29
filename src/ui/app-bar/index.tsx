@@ -1,4 +1,3 @@
-import React from 'react'
 import styled from 'styled-components'
 
 import { Row } from '~/ui/row'
@@ -7,13 +6,11 @@ type Props = {
   children: React.ReactNode
 }
 
-export const AppBar = ({ children }: Props) => {
-  return (
-    <Row as={Header} direction="column">
-      {children}
-    </Row>
-  )
-}
+export const AppBar = ({ children }: Props) => (
+  <Row as={Header} direction="column">
+    {children}
+  </Row>
+)
 
 const Header = styled.header`
   display: flex;
