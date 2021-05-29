@@ -1,49 +1,55 @@
-# 🚀 Weather Web App
+# ☔️ Weather Web Application
 
 [![Dependency Status](https://david-dm.org/shahirov/weather-web-app.svg)](https://david-dm.org/shahirov/weather-web-app)
 [![devDependency Status](https://david-dm.org/shahirov/weather-web-app/dev-status.svg)](https://david-dm.org/shahirov/weather-web-app?type=dev)
 [![Known Vulnerabilities](https://snyk.io/test/github/shahirov/weather-web-app/badge.svg)](https://snyk.io/test/github/shahirov/weather-web-app)
 
-## Technology stack
+Ознакомиться с приложением можно [здесь](my-weather-web-app.surge.sh).
+
+Погодное приложение, созданное на React. В приложении присутствует полноценная авторизация пользователя с валидацией как на стороне клиента, так и на стороне сервера. Позволяет пользователю искать погоду в своих городах и сохранять их в избранное. При клике на карточку с городом, можно узнать детальную информацию прогноза погоды на ближайшие 5 дней.
+
+Код выполняется на стороне клиента, и вам нужно будет предоставить свой собственный <API_KEY> из openweathermap, а также для firebase, если вы хотите расширить проект.
+
+## Покажите мне
+
+![example](/screenshots/home-page.png)
+![example](/screenshots/add-page.png)
+![example](/screenshots/details-page.png)
+![example](/screenshots/login-page.png)
+
+## Цели и результат
+
+- Авторизация пользователя с валидацией на стороне клиента и сервера ✔
+- Загрузка и рендер избранных городов с погодными температурами из firebase storage ✔
+- Сохранение города в избранные ✔
+- Загрузка и рендер прогноза погоды на ближайшие 5 дней для конкретного города с детальной информацией. ✔
+- Переключение темы на светлую/темную ✔
+- Респонсивность и прелоадер во время процесса авторизации при заходе в первый раз на страницу. ✔
+
+## Использованные технологии в приложении
 
 - [TypeScript](https://www.typescriptlang.org/)
 - [PostCSS](https://github.com/postcss/postcss)
 - [Babel](https://github.com/babel/babel)
-- [Webpack](https://github.com/webpack/webpack) for bundling
-- [React](https://github.com/facebook/react) & [React DOM](https://github.com/facebook/react) for views
-- [React Router](https://github.com/ReactTraining/react-router) handles in-app routing
-- [Redux](https://github.com/reduxjs/redux-toolkit) manages application state
-- [React Redux](https://github.com/reduxjs/react-redux) to use react-redux bindings
-- [Styled Components](https://github.com/styled-components) allows styling components in JS
-- [ESLint](https://github.com/eslint/eslint) for linting JS/TS
-- [Jest](https://github.com/facebook/jest) as test runner
-- [TS Jest](https://github.com/kulshekhar/ts-jest) as Jest preprocessor
-- [React Testing Library](https://github.com/testing-library/react-testing-library) for asserting React Components
+- [Webpack](https://github.com/webpack/webpack)
+- [React](https://github.com/facebook/react) & [React DOM](https://github.com/facebook/react)
+- [Firebase](https://github.com/firebase/firebase-js-sdk)
+- [React Router](https://github.com/ReactTraining/react-router)
+- [Redux Toolkit](https://github.com/reduxjs/redux-toolkit)
+- [React Redux](https://github.com/reduxjs/react-redux)
+- [Downshift](https://github.com/downshift-js/downshift)
+- [Styled Components](https://github.com/styled-components)
+- [ESLint](https://github.com/eslint/eslint)
 
-## Installation
+## Использованные API:
 
-1. Make sure you have Node.js v12.18.0 and npm v6 or above installed
-2. Clone this repo using `git clone https://github.com/shahirov/weather-web-app.git`
-3. Move to the appropriate directory: `cd weather-web-app`<br />
-4. Run `npm install` in order to install dependencies<br />
-5. Now you can run `npm start` to see the example app at `http://localhost:8000`
+1. API погоды - openweathermap.org
+2. API геоданных - http://geodb-free-service.wirefreethought.com/v1
 
-## Available Scripts
+## Запуск приложения
 
-In the project directory, you can run:
-
-- `npm start` - runs the app in the development mode
-- `npm run build` - builds the app for production
-- `npm run build-analyze` - open bundle analyzer in browser
-- `npm run qa` - run code quality tools
-- `npm run fix` - fix linting errors
-- `npm run lint` - run linters
-- `npm run eslint` - run ESLint
-- `npm run ts` - run TypeScript checks
-- `npm run ts-files` - list TypeScript files
-- `npm run ts-coverage` - show TypeScript coverage
-- `npm run codestyle` - checks code style with prettier
-- `npm run format` - format files with prettier
-- `npm run test` - launches the test runner
-- `npm run test-silent` - launches the test runner and show errors only
-- `npm run test-coverage` - show test coverage
+1. Убедитесь, что у вас установлен Node.js v12.18.0 и npm v6 или выше
+2. Клонируйте репозиторий с помощью `git clone https://github.com/shahirov/weather-web-app.git`.
+3. Переходите в соотвествующий каталог командой `cd weather-web-app`<br />
+4. Установите пакеты `npm install`<br />
+5. Теперь запускаем приложение командой `npm start` и открываем его по адресу `http://localhost:8000`
