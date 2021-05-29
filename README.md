@@ -4,7 +4,7 @@
 [![devDependency Status](https://david-dm.org/shahirov/weather-web-app/dev-status.svg)](https://david-dm.org/shahirov/weather-web-app?type=dev)
 [![Known Vulnerabilities](https://snyk.io/test/github/shahirov/weather-web-app/badge.svg)](https://snyk.io/test/github/shahirov/weather-web-app)
 
-Ознакомиться с приложением можно [здесь](my-weather-web-app.surge.sh).
+Ознакомиться с приложением можно [здесь](http://my-weather-web-app.surge.sh/).
 
 Погодное приложение, созданное на React. В приложении присутствует полноценная авторизация пользователя с валидацией как на стороне клиента, так и на стороне сервера. Позволяет пользователю искать погоду в своих городах и сохранять их в избранное. При клике на карточку с городом, можно узнать детальную информацию прогноза погоды на ближайшие 5 дней.
 
